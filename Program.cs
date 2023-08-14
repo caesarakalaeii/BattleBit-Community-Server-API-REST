@@ -230,14 +230,10 @@ public class MyGameServer : GameServer<MyPlayer>
         return true;
     }
 
-    //public override async Task OnTick()
-    //{
-    //    while (!queue.IsEmpty())
-    //    {
-    //        Command c = queue.Dequeue();
-    //        HandleCommand(c);
-    //    }
-    //}
+    public override async Task OnTick()
+    {
+        foreach (var player in AllPlayers) player.Message($"HP: {player.HP}", 0f);
+    }
 
     public async Task HandleCommand(Command c)
     {
