@@ -1,5 +1,4 @@
 ﻿using BattleBitAPI.Common;
-using BattleBitAPI.Networking;
 using BattleBitAPI.Server;
 using System.Net;
 using System.Numerics;
@@ -15,9 +14,38 @@ namespace BattleBitAPI
         public string Name => mInternal.Name;
         public IPAddress IP => mInternal.IP;
         public GameServer<TPlayer> GameServer => mInternal.GameServer;
-        public GameRole Role => mInternal.Role;
-        public Team Team => mInternal.Team;
-        public Squads Squad => mInternal.Squad;
+        public GameRole Role
+        {
+            get => mInternal.Role;
+            set
+            {
+                if (value == mInternal.Role)
+                    return;
+                SetNewRole(value);
+            }
+        }
+        public Team Team
+        {
+            get => mInternal.Team;
+            set
+            {
+                if (mInternal.Team != value)
+                    ChangeTeam(value);
+            }
+        }
+        public Squads Squad
+        {
+            get => mInternal.Squad;
+            set
+            {
+                if (value == mInternal.Squad)
+                    return;
+                if (value == Squads.NoSquad)
+                    KickFromSquad();
+                else
+                    JoinSquad(value);
+            }
+        }
         public bool InSquad => mInternal.Squad != Squads.NoSquad;
         public int PingMs => mInternal.PingMs;
 
@@ -27,14 +55,19 @@ namespace BattleBitAPI
         public bool IsDown => mInternal.HP == 0f;
         public bool IsDead => mInternal.HP == -1f;
 
-        public Vector3 Position => mInternal.Position;
-        public PlayerStand Standing => mInternal.Standing;
-        public LeaningSide Leaning => mInternal.Leaning;
+        public Vector3 Position
+        {
+            get => mInternal.Position;
+            set => Teleport(value);
+        }
+        public PlayerStand StandingState => mInternal.Standing;
+        public LeaningSide LeaningState => mInternal.Leaning;
         public LoadoutIndex CurrentLoadoutIndex => mInternal.CurrentLoadoutIndex;
         public bool InVehicle => mInternal.InVehicle;
         public bool IsBleeding => mInternal.IsBleeding;
         public PlayerLoadout CurrentLoadout => mInternal.CurrentLoadout;
         public PlayerWearings CurrentWearings => mInternal.CurrentWearings;
+        public PlayerModifications<TPlayer> Modifications => mInternal.Modifications;
 
         // ---- Events ----
         public virtual void OnCreated()
@@ -47,6 +80,22 @@ namespace BattleBitAPI
 
         }
         public virtual async Task OnSpawned()
+        {
+
+        }
+        public virtual async Task OnDowned()
+        {
+
+        }
+        public virtual async Task OnGivenUp()
+        {
+
+        }
+        public virtual async Task OnRevivedByAnotherPlayer()
+        {
+
+        }
+        public virtual async Task OnRevivedAnotherPlayer()
         {
 
         }
@@ -78,47 +127,51 @@ namespace BattleBitAPI
         // ---- Functions ----
         public void Kick(string reason = "")
         {
-            this.GameServer.Kick(this, reason);
+            GameServer.Kick(this, reason);
         }
         public void Kill()
         {
-            this.GameServer.Kill(this);
+            GameServer.Kill(this);
         }
         public void ChangeTeam()
         {
-            this.GameServer.ChangeTeam(this);
+            GameServer.ChangeTeam(this);
         }
         public void ChangeTeam(Team team)
         {
-            this.GameServer.ChangeTeam(this, team);
+            GameServer.ChangeTeam(this, team);
         }
         public void KickFromSquad()
         {
-            this.GameServer.KickFromSquad(this);
+            GameServer.KickFromSquad(this);
+        }
+        public void JoinSquad(Squads targetSquad)
+        {
+            GameServer.JoinSquad(this, targetSquad);
         }
         public void DisbandTheSquad()
         {
-            this.GameServer.DisbandPlayerCurrentSquad(this);
+            GameServer.DisbandPlayerCurrentSquad(this);
         }
         public void PromoteToSquadLeader()
         {
-            this.GameServer.PromoteSquadLeader(this);
+            GameServer.PromoteSquadLeader(this);
         }
         public void WarnPlayer(string msg)
         {
-            this.GameServer.WarnPlayer(this, msg);
+            GameServer.WarnPlayer(this, msg);
         }
         public void Message(string msg)
         {
-            this.GameServer.MessageToPlayer(this, msg);
+            GameServer.MessageToPlayer(this, msg);
         }
         public void Message(string msg, float fadeoutTime)
         {
-            this.GameServer.MessageToPlayer(this, msg, fadeoutTime);
+            GameServer.MessageToPlayer(this, msg, fadeoutTime);
         }
         public void SetNewRole(GameRole role)
         {
-            this.GameServer.SetRoleTo(this, role);
+            GameServer.SetRoleTo(this, role);
         }
         public void Teleport(Vector3 target)
         {
@@ -196,7 +249,7 @@ namespace BattleBitAPI
         // ---- Overrides ----
         public override string ToString()
         {
-            return this.Name + " (" + this.SteamID + ")";
+            return Name + " (" + SteamID + ")";
         }
 
         // ---- Internal ----
@@ -222,18 +275,89 @@ namespace BattleBitAPI
             public PlayerLoadout CurrentLoadout;
             public PlayerWearings CurrentWearings;
 
+            public mPlayerModifications _Modifications;
+            public PlayerModifications<TPlayer> Modifications;
+
+            public Internal()
+            {
+                this.Modifications = new PlayerModifications<TPlayer>(this);
+                this._Modifications = new mPlayerModifications();
+            }
+
             public void OnDie()
             {
-                this.IsAlive = false;
-                this.HP = -1f;
-                this.Position = default;
-                this.Standing = PlayerStand.Standing;
-                this.Leaning = LeaningSide.None;
-                this.CurrentLoadoutIndex = LoadoutIndex.Primary;
-                this.InVehicle = false;
-                this.IsBleeding = false;
-                this.CurrentLoadout = new PlayerLoadout();
-                this.CurrentWearings = new PlayerWearings();
+                IsAlive = false;
+                HP = -1f;
+                Position = default;
+                Standing = PlayerStand.Standing;
+                Leaning = LeaningSide.None;
+                CurrentLoadoutIndex = LoadoutIndex.Primary;
+                InVehicle = false;
+                IsBleeding = false;
+                CurrentLoadout = new PlayerLoadout();
+                CurrentWearings = new PlayerWearings();
+            }
+        }
+        public class mPlayerModifications
+        {
+            public float RunningSpeedMultiplier = 1f;
+            public float ReceiveDamageMultiplier = 1f;
+            public float GiveDamageMultiplier = 1f;
+            public float JumpHeightMultiplier = 1f;
+            public float FallDamageMultiplier = 1f;
+            public float ReloadSpeedMultiplier = 1f;
+            public bool CanUseNightVision = true;
+            public bool HasCollision = false;
+            public float DownTimeGiveUpTime = 60f;
+            public bool AirStrafe = true;
+            public bool CanSpawn = true;
+            public bool CanSpectate = true;
+            public bool IsTextChatMuted = false;
+            public bool IsVoiceChatMuted = false;
+            public float RespawnTime = 10f;
+            public bool CanRespawn = true;
+
+            public bool IsDirtyFlag = false;
+            public void Write(BattleBitAPI.Common.Serialization.Stream ser)
+            {
+                ser.Write(this.RunningSpeedMultiplier);
+                ser.Write(this.ReceiveDamageMultiplier);
+                ser.Write(this.GiveDamageMultiplier);
+                ser.Write(this.JumpHeightMultiplier);
+                ser.Write(this.FallDamageMultiplier);
+                ser.Write(this.ReloadSpeedMultiplier);
+                ser.Write(this.CanUseNightVision);
+                ser.Write(this.HasCollision);
+                ser.Write(this.DownTimeGiveUpTime);
+                ser.Write(this.AirStrafe);
+                ser.Write(this.CanSpawn);
+                ser.Write(this.CanSpectate);
+                ser.Write(this.IsTextChatMuted);
+                ser.Write(this.IsVoiceChatMuted);
+                ser.Write(this.RespawnTime);
+                ser.Write(this.CanRespawn);
+            }
+            public void Read(BattleBitAPI.Common.Serialization.Stream ser)
+            {
+                this.RunningSpeedMultiplier = ser.ReadFloat();
+                if (this.RunningSpeedMultiplier <= 0f)
+                    this.RunningSpeedMultiplier = 0.01f;
+
+                this.ReceiveDamageMultiplier = ser.ReadFloat();
+                this.GiveDamageMultiplier = ser.ReadFloat();
+                this.JumpHeightMultiplier = ser.ReadFloat();
+                this.FallDamageMultiplier = ser.ReadFloat();
+                this.ReloadSpeedMultiplier = ser.ReadFloat();
+                this.CanUseNightVision = ser.ReadBool();
+                this.HasCollision = ser.ReadBool();
+                this.DownTimeGiveUpTime = ser.ReadFloat();
+                this.AirStrafe = ser.ReadBool();
+                this.CanSpawn = ser.ReadBool();
+                this.CanSpectate = ser.ReadBool();
+                this.IsTextChatMuted = ser.ReadBool();
+                this.IsVoiceChatMuted = ser.ReadBool();
+                this.RespawnTime = ser.ReadFloat();
+                this.CanRespawn = ser.ReadBool();
             }
         }
     }
