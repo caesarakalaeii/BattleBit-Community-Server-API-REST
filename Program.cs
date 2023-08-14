@@ -351,7 +351,7 @@ public class MyGameServer : GameServer<MyPlayer>
                 {
                     mGameModeIndex = (mGameModeIndex + 1) % mGameModes.Count;
                     mCurrentGameMode = mGameModes[mGameModeIndex];
-                    player.Message($"GameMode is now {mCurrentGameMode.Name}", 2f);
+                    AnnounceShort($"GameMode is now {mCurrentGameMode.Name}");
                     Console.WriteLine($"GameMode is now {mCurrentGameMode.Name}");
                     break;
                 }
