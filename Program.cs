@@ -232,7 +232,10 @@ public class MyGameServer : GameServer<MyPlayer>
 
     public override async Task OnTick()
     {
-        foreach (var player in AllPlayers) SayToChat($"{player.Name} HP: {player.HP}");
+        await Task.Run(() =>
+        {
+            foreach (var player in AllPlayers) SayToChat($"{player.Name} HP: {player.HP}");
+        });
     }
 
     public async Task HandleCommand(Command c)
