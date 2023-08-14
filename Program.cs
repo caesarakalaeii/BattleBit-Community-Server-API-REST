@@ -112,12 +112,12 @@ public class MyGameServer : GameServer<MyPlayer>
     }
 
 
-    public override Task<PlayerStats> OnGetPlayerStats(ulong steamID, PlayerStats officialStats)
+    public override Task OnPlayerJoiningToServer(ulong steamID, PlayerJoiningArguments args)
     {
-        officialStats.Progress.Rank = 200;
-        officialStats.Progress.Prestige = 10;
-        mCurrentGameMode.OnGetPlayerStats(steamID, officialStats);
-        return base.OnGetPlayerStats(steamID, officialStats);
+        args.Stats.Progress.Rank = 200;
+        args.Stats.Progress.Prestige = 10;
+        mCurrentGameMode.OnPlayerJoiningToServer(steamID, args);
+        return base.OnPlayerJoiningToServer(steamID, args);
     }
 
     public override async Task<bool> OnPlayerTypedMessage(MyPlayer player, ChatChannel channel, string msg)
