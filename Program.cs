@@ -3,6 +3,7 @@ using BattleBitAPI;
 using BattleBitAPI.Common;
 using BattleBitAPI.Server;
 using CommunityServerAPI;
+using CommunityServerAPI.server_utilities;
 
 internal class Program
 {
@@ -57,6 +58,7 @@ public class MyGameServer : GameServer<MyPlayer>
     {
         new LifeSteal(),
         new Swap(),
+        new Hardcore(),
         new MeleeOnly(),
         new GunGame()
     };
@@ -179,6 +181,12 @@ public class MyGameServer : GameServer<MyPlayer>
         }
     }
 
+    public override Task OnReconnected()
+    {
+        await Console.Out.WriteLineAsync($"Current GameMode: {mCurrentGameMode.Name}");
+        return base.OnReconnected();
+    }
+
     public override async Task OnConnected()
     {
         mCurrentGameMode = mGameModes[0];
@@ -230,13 +238,6 @@ public class MyGameServer : GameServer<MyPlayer>
         return true;
     }
 
-    public override async Task OnTick()
-    {
-        await Task.Run(() =>
-        {
-            foreach (var player in AllPlayers) SayToChat($"{player.Name} HP: {Convert.ToInt32(player.HP * 100)}");
-        });
-    }
 
     public async Task HandleCommand(Command c)
     {
@@ -261,7 +262,7 @@ public class MyGameServer : GameServer<MyPlayer>
                 }
                 case ActionType.Grenade:
                 {
-                    //can't get player pos right now   
+                    //can't spawn stuff, also no playerPOS 
                     player.Message($"{c.ExecutorName} has spawned a grenade on you");
                     break;
                 }
