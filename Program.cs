@@ -57,7 +57,7 @@ public class MyGameServer : GameServer<MyPlayer>
     {
         new MeleeOnly(),
         new Swap(),
-        new GunGame(),
+        new GunGame()
     };
 
     //public CommandQueue queue = new();
@@ -352,6 +352,7 @@ public class MyGameServer : GameServer<MyPlayer>
                     mGameModeIndex = (mGameModeIndex + 1) % mGameModes.Count;
                     mCurrentGameMode = mGameModes[mGameModeIndex];
                     player.Message($"GameMode is now {mCurrentGameMode.Name}", 2f);
+                    Console.WriteLine($"GameMode is now {mCurrentGameMode.Name}");
                     break;
                 }
                 // Add more cases for other ActionType values as needed
