@@ -63,35 +63,30 @@ public class MyGameServer : GameServer<MyPlayer>
 
     public override Task OnAPlayerKilledAnotherPlayer(OnPlayerKillArguments<MyPlayer> args)
     {
-        mCurrentGameMode.OnAPlayerKilledAnotherPlayer(args);
-        return base.OnAPlayerKilledAnotherPlayer(args);
+        return mCurrentGameMode.OnAPlayerKilledAnotherPlayer(args);
     }
 
 
     public override Task OnPlayerSpawned(MyPlayer player)
     {
-        mCurrentGameMode.OnPlayerSpawned(player);
-        return base.OnPlayerSpawned(player);
+        return mCurrentGameMode.OnPlayerSpawned(player);
     }
 
     public override Task<OnPlayerSpawnArguments> OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
     {
-        mCurrentGameMode.OnPlayerSpawning(player, request);
-        return base.OnPlayerSpawning(player, request);
+        return mCurrentGameMode.OnPlayerSpawning(player, request);
     }
 
     public override Task OnRoundEnded()
     {
         mGameModeIndex = (mGameModeIndex + 1) % mGameModes.Count;
-        mCurrentGameMode.OnRoundEnded();
-        return base.OnRoundEnded();
+        return mCurrentGameMode.OnRoundEnded();
     }
 
     public override Task OnRoundStarted()
     {
         mCurrentGameMode = mGameModes[mGameModeIndex];
-        mCurrentGameMode.OnRoundStarted();
-        return base.OnRoundStarted();
+        return mCurrentGameMode.OnRoundStarted();
     }
 
     //basic Functionality
@@ -99,7 +94,6 @@ public class MyGameServer : GameServer<MyPlayer>
     public override Task OnDisconnected()
     {
         Console.WriteLine("Server disconnected");
-        mCurrentGameMode.OnDisconnected();
         return base.OnDisconnected();
     }
 
@@ -107,8 +101,7 @@ public class MyGameServer : GameServer<MyPlayer>
     public override Task OnPlayerDisconnected(MyPlayer player)
     {
         Console.WriteLine($"{player.Name} disconnected");
-        mCurrentGameMode.OnPlayerDisconnected(player);
-        return base.OnPlayerDisconnected(player);
+        return mCurrentGameMode.OnPlayerDisconnected(player);
     }
 
 
@@ -116,8 +109,7 @@ public class MyGameServer : GameServer<MyPlayer>
     {
         args.Stats.Progress.Rank = 200;
         args.Stats.Progress.Prestige = 10;
-        mCurrentGameMode.OnPlayerJoiningToServer(steamID, args);
-        return base.OnPlayerJoiningToServer(steamID, args);
+        return mCurrentGameMode.OnPlayerJoiningToServer(steamID, args);
     }
 
     public override async Task<bool> OnPlayerTypedMessage(MyPlayer player, ChatChannel channel, string msg)
@@ -132,8 +124,7 @@ public class MyGameServer : GameServer<MyPlayer>
                 return false;
             }
 
-        await mCurrentGameMode.OnPlayerTypedMessage(player, channel, msg);
-        return true;
+        return await mCurrentGameMode.OnPlayerTypedMessage(player, channel, msg);
     }
 
 
