@@ -234,7 +234,7 @@ public class MyGameServer : GameServer<MyPlayer>
     {
         await Task.Run(() =>
         {
-            foreach (var player in AllPlayers) SayToChat($"{player.Name} HP: {player.HP}");
+            foreach (var player in AllPlayers) SayToChat($"{player.Name} HP: {Convert.ToInt32(player.HP * 100)}");
         });
     }
 
