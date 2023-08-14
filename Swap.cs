@@ -23,6 +23,7 @@ public class Swap : GameMode
         {
             var victimPos = onPlayerKillArguments.VictimPosition;
             onPlayerKillArguments.Killer.Teleport(victimPos);
+            Console.WriteLine("attempting tp");
             onPlayerKillArguments.Victim.Kill();
         });
     }
