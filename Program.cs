@@ -17,11 +17,9 @@ internal class Program
 
 public class MyPlayer : Player<MyPlayer>
 {
-
     public bool IsAdmin;
     public bool IsStreamer;
     public int Level;
-
 }
 
 public class MyGameServer : GameServer<MyPlayer>
@@ -177,7 +175,6 @@ public class MyGameServer : GameServer<MyPlayer>
 
     public override async Task OnConnected()
     {
-
         await Console.Out.WriteLineAsync(GameIP + " Connected");
         await Console.Out.WriteLineAsync("Fetching configs");
         try
@@ -226,9 +223,6 @@ public class MyGameServer : GameServer<MyPlayer>
 
         player.IsAdmin = true;
         return true;
-    }
-
-
     }
 
     //public override async Task OnTick()
