@@ -56,7 +56,7 @@ public class MyGameServer : GameServer<MyPlayer>
     private readonly List<ulong> mListedStreamers = new();
     private readonly string mSteamIdJson = "./config/streamer_steamids.json";
 
-    private MyGameServer mCurrentGameMode;
+    private MyGameServer mCurrentGameMode = new GunGame();
     private int mGameModeIndex;
 
     //modular GameModes: CHECK if new Gamemodes need more passthrough
