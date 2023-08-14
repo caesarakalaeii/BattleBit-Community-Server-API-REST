@@ -175,6 +175,15 @@ public class MyGameServer : GameServer<MyPlayer>
 
     public override async Task OnConnected()
     {
+        try
+        {
+            await mCurrentGameMode.OnConnected();
+        }
+        catch
+        {
+            mCurrentGameMode = mGameModes[0];
+        }
+
         await Console.Out.WriteLineAsync(GameIP + " Connected");
         await Console.Out.WriteLineAsync("Fetching configs");
         try
@@ -208,8 +217,6 @@ public class MyGameServer : GameServer<MyPlayer>
         {
             await Console.Out.WriteLineAsync("Fetching admins failed: " + ex);
         }
-
-        await mCurrentGameMode.OnConnected();
     }
 
 
