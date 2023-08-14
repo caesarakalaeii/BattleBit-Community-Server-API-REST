@@ -40,7 +40,8 @@ public class MyGameServer : GameServer<MyPlayer>
         new SetStreamerCommand(),
         new RemoveStreamerCommand(),
         new OpCommand(),
-        new DeopCommand()
+        new DeopCommand(),
+        new NextGameModeCommand()
     };
 
 
@@ -49,7 +50,9 @@ public class MyGameServer : GameServer<MyPlayer>
 
     private readonly List<GameServer<MyPlayer>> mGameModes = new()
     {
-        new GunGame()
+        new GunGame(),
+        new MeleeOnly(),
+        new Swap()
     };
 
     //public CommandQueue queue = new();
@@ -333,6 +336,11 @@ public class MyGameServer : GameServer<MyPlayer>
                 {
                     player.IsAdmin = false;
                     SaveAdmins();
+                    break;
+                }
+                case ActionType.NextGameMode:
+                {
+                    mGameModeIndex++;
                     break;
                 }
                 // Add more cases for other ActionType values as needed

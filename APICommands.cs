@@ -390,3 +390,23 @@ public class DeopCommand : APICommand
         return c;
     }
 }
+
+public class NextGameModeCommand : APICommand
+{
+    public NextGameModeCommand()
+    {
+        CommandPrefix = "!nextGM";
+        Help = ": switches to the next gamemode in the playlist";
+    }
+
+    public override Command ChatCommand(MyPlayer player, ChatChannel channel, string msg)
+    {
+        var c = new Command
+        {
+            StreamerId = player.SteamID,
+            Action = ActionType.NextGameMode,
+            ExecutorName = "Chat Test"
+        };
+        return c;
+    }
+}
