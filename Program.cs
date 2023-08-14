@@ -61,9 +61,15 @@ public class MyGameServer : GameServer<MyPlayer>
 
     //modular GameModes: CHECK if new Gamemodes need more passthrough
 
-    public override Task OnAPlayerKilledAnotherPlayer(OnPlayerKillArguments<MyPlayer> args)
+
+    public override Task OnAPlayerDownedAnotherPlayer(OnPlayerKillArguments<MyPlayer> args)
     {
-        return mCurrentGameMode.OnAPlayerKilledAnotherPlayer(args);
+        return mCurrentGameMode.OnAPlayerDownedAnotherPlayer(args);
+    }
+
+    public override Task OnPlayerGivenUp(MyPlayer player)
+    {
+        return mCurrentGameMode.OnPlayerGivenUp(player);
     }
 
 

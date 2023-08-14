@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using BattleBitAPI.Common;
 
-namespace CommunityServerAPI;
+namespace BattleBitAPI.Server;
 
 public abstract class APICommand
 {

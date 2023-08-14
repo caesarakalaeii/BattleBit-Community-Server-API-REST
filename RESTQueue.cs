@@ -2,46 +2,43 @@ using System.Collections.Concurrent;
 using System.Numerics;
 using BattleBitAPI.Common;
 
-namespace CommunityServerAPI
+namespace BattleBitAPI.Server;
+
+public class Command
 {
-    
+    public ActionType Action { get; set; }
+    public ulong StreamerId { get; set; }
+    public int Amount { get; set; }
 
-    public class Command
+    public Vector3 Location { get; set; }
+    public IEnumerable<string> Data { get; set; }
+
+    public string ExecutorName { get; set; }
+
+    public List<Attachment> AttachmentChange { get; set; }
+
+    public List<Weapon> WeaponChange { get; set; }
+
+    public List<Gadget> GadgetChange { get; set; }
+}
+
+public class CommandQueue
+{
+    private readonly ConcurrentQueue<Command> _queue = new();
+
+    public void Enqueue(Command command)
     {
-        public ActionType Action { get; set; }
-        public ulong StreamerId { get; set; }
-        public int Amount { get; set; }
-
-        public Vector3 Location { get; set; }
-        public IEnumerable<string> Data { get; set; }
-
-        public string ExecutorName { get; set; }
-
-        public List<Attachment> AttachmentChange{ get; set; }
-        
-        public List<Weapon> WeaponChange{ get; set; }
-        
-        public List<Gadget> GadgetChange{ get; set; }
+        _queue.Enqueue(command);
     }
 
-    public class CommandQueue
+    public Command Dequeue()
     {
-        private readonly ConcurrentQueue<Command> _queue = new();
+        _queue.TryDequeue(out var command);
+        return command;
+    }
 
-        public void Enqueue(Command command)
-        {
-            _queue.Enqueue(command);
-        }
-
-        public Command Dequeue()
-        {
-            _queue.TryDequeue(out var command);
-            return command;
-        }
-
-        public bool IsEmpty()
-        {
-            return _queue.IsEmpty;
-        }
+    public bool IsEmpty()
+    {
+        return _queue.IsEmpty;
     }
 }

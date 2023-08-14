@@ -60,7 +60,7 @@ public class GunGame : MyGameServer
         player.SetPrimaryWeapon(w, 0, true); //currently buggy everything will crash
     }
 
-    public override async Task OnAPlayerKilledAnotherPlayer(OnPlayerKillArguments<MyPlayer> onPlayerKillArguments)
+    public override async Task OnAPlayerDownedAnotherPlayer(OnPlayerKillArguments<MyPlayer> onPlayerKillArguments)
     {
         await Task.Run(() =>
         {
