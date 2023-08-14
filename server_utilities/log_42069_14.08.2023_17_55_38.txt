@@ -1,0 +1,92 @@
+14.08.2023 17:55:38
+Starting server [Production 2.0.1 - Community Servers]
+----
+Server Name = Gun Game Test
+Server LocalIP = 0.0.0.0
+Server BroadcastIP = 127.0.0.1
+Server Port = 42069
+Server Max Size = Small
+Server Hz  = 120
+----
+----
+Fixed server size: false
+Server Size = Small - 32
+Max Size = Small
+----
+----
+Map Name  = Azagor(Small)
+Game Mode = TDM
+----
+----
+Hosting Server
+Server hosted successfully
+----
+----
+Registering to steam servers 
+Successfully registered to steam servers
+----
+----
+Connecting to master server, region : Europe_Central
+Connected to master server (202.61.197.60)
+NAT IP: 202.61.197.60
+----
+----
+
+
+
+
+Waiting for 4 players
+Master server [Scaledown If Server Is Empty: True]
+Anti Cheat Kicks: True
+Verify Games Files: True
+Server decided to change map due can not collect enough players
+Game ended, won => Nobody
+Caesar (76561198053896127) connected [TeamA] with MTU of 1436
+Choosen => Construction -> Gamemode : TDM
+Caesar (76561198053896127) disconnected (RemoteConnectionRequestedToTerminate)
+Resetting
+Reset !
+Starting server [Production 2.0.1 - Community Servers]
+----
+Server Name = Gun Game Test
+Server LocalIP = 0.0.0.0
+Server BroadcastIP = 127.0.0.1
+Server Port = 42069
+Server Max Size = Small
+Server Hz  = 120
+----
+----
+Fixed server size: false
+Server Size = Tiny - 8
+Max Size = Small
+----
+----
+Map Name  = Construction(Tiny)
+Game Mode = TDM
+----
+----
+Hosting Server
+Server hosted successfully
+----
+----
+Pinging master server
+----
+----
+
+
+
+
+Waiting for 2 players
+Caesar (76561198053896127) connected [TeamA] with MTU of 1436
+Waiting for 1 players
+Counting game to start [15]
+Counting game to start [14]
+Counting game to start [13]
+Counting game to start [12]
+Counting game to start [11]
+Counting game to start [10]
+Counting game to start [9]
+Counting game to start [8]
+Counting game to start [7]
+Counting game to start [6]
+Counting game to start [5]

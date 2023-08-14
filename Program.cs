@@ -47,7 +47,7 @@ public class MyGameServer : GameServer<MyPlayer>
     private readonly string mAdminJson = "./config/admins.json";
     private readonly List<ulong> mAdmins = new();
 
-    private readonly List<MyGameServer> mGameModes = new()
+    private readonly List<GameServer<MyPlayer>> mGameModes = new()
     {
         new GunGame()
     };
@@ -56,7 +56,7 @@ public class MyGameServer : GameServer<MyPlayer>
     private readonly List<ulong> mListedStreamers = new();
     private readonly string mSteamIdJson = "./config/streamer_steamids.json";
 
-    private MyGameServer mCurrentGameMode = new GunGame();
+    private GameServer<MyPlayer> mCurrentGameMode = new GunGame();
     private int mGameModeIndex;
 
     //modular GameModes: CHECK if new Gamemodes need more passthrough

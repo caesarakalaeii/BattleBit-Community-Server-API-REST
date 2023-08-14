@@ -1,8 +1,9 @@
-﻿using BattleBitAPI.Common;
+using BattleBitAPI.Common;
+using BattleBitAPI.Server;
 
 namespace CommunityServerAPI;
 
-public class GunGame : MyGameServer
+public class GunGame : GameServer<MyPlayer>
 {
     private readonly List<Weapon> mGunGame = new()
     {
@@ -86,4 +87,7 @@ public class GunGame : MyGameServer
         foreach (var player in AllPlayers) player.Level = 0;
         return base.OnRoundEnded();
     }
+
+   
+
 }
