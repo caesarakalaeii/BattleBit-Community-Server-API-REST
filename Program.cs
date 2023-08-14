@@ -340,7 +340,8 @@ public class MyGameServer : GameServer<MyPlayer>
                 }
                 case ActionType.NextGameMode:
                 {
-                    mGameModeIndex++;
+                    mGameModeIndex = (mGameModeIndex + 1) % mGameModes.Count;
+                    mCurrentGameMode = mGameModes[mGameModeIndex];
                     break;
                 }
                 // Add more cases for other ActionType values as needed
