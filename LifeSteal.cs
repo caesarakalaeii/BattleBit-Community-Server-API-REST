@@ -21,7 +21,6 @@ public class LifeSteal : GameMode
         player.SetRunningSpeedMultiplier(1.25f);
         player.SetFallDamageMultiplier(0f);
         player.SetJumpMultiplier(1.5f);
-        if (player.SteamID == 76561198053896127) player.SetReceiveDamageMultiplier(0f);
         return base.OnPlayerSpawned(player);
     }
 }
