@@ -183,7 +183,7 @@ public class MyGameServer : GameServer<MyPlayer>
 
     public override Task OnReconnected()
     {
-        await Console.Out.WriteLineAsync($"Current GameMode: {mCurrentGameMode.Name}");
+        Console.Out.WriteLine($"Current GameMode: {mCurrentGameMode.Name}");
         return base.OnReconnected();
     }
 
