@@ -1,10 +1,14 @@
 ﻿using BattleBitAPI.Common;
-using BattleBitAPI.Server;
 
 namespace CommunityServerAPI;
 
-public class Swap : GameServer<MyPlayer>
+public class Swap : GameMode
 {
+    public Swap()
+    {
+        Name = "Swappers";
+    }
+
     public override Task<OnPlayerSpawnArguments> OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
     {
         player.SetLightGadget("Pickaxe", 0, true);

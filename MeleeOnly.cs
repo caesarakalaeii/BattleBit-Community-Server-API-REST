@@ -3,8 +3,13 @@ using BattleBitAPI.Server;
 
 namespace CommunityServerAPI;
 
-public class MeleeOnly : GameServer<MyPlayer>
+public class MeleeOnly : GameMode
 {
+
+    public MeleeOnly()
+    {
+        Name = "MeleeOnly";
+    }
     public override Task<OnPlayerSpawnArguments> OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
     {
         player.SetLightGadget("Pickaxe", 0, true);

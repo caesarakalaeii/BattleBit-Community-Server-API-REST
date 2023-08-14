@@ -3,8 +3,13 @@ using BattleBitAPI.Server;
 
 namespace CommunityServerAPI;
 
-public class GunGame : GameServer<MyPlayer>
+public class GunGame : GameMode
 {
+    public GunGame()
+    {
+        Name = "GunGame";
+    }
+    
     private readonly List<Weapon> mGunGame = new()
     {
         Weapons.Glock18,

@@ -15,6 +15,11 @@ internal class Program
     }
 }
 
+public class GameMode : GameServer<MyPlayer>
+{
+    public string Name = string.Empty;
+}
+
 public class MyPlayer : Player<MyPlayer>
 {
     public bool IsAdmin;
@@ -48,7 +53,7 @@ public class MyGameServer : GameServer<MyPlayer>
     private readonly string mAdminJson = "./config/admins.json";
     private readonly List<ulong> mAdmins = new();
 
-    private readonly List<GameServer<MyPlayer>> mGameModes = new()
+    private readonly List<GameMode> mGameModes = new()
     {
         new GunGame(),
         new MeleeOnly(),
@@ -59,7 +64,7 @@ public class MyGameServer : GameServer<MyPlayer>
     private readonly List<ulong> mListedStreamers = new();
     private readonly string mSteamIdJson = "./config/streamer_steamids.json";
 
-    private GameServer<MyPlayer> mCurrentGameMode = new GunGame();
+    private GameMode mCurrentGameMode = new GunGame();
     private int mGameModeIndex;
 
     //modular GameModes: CHECK if new Gamemodes need more passthrough
@@ -316,24 +321,28 @@ public class MyGameServer : GameServer<MyPlayer>
                 }
                 case ActionType.SetStreamer:
                 {
+                    player.Message("You are now a streamer", 2f);
                     player.IsStreamer = true;
                     SaveStreamers();
                     break;
                 }
                 case ActionType.RemoveStreamer:
                 {
+                    player.Message("You are no longer a streamer", 2f);
                     player.IsStreamer = false;
                     SaveStreamers();
                     break;
                 }
                 case ActionType.GrantOP:
                 {
+                    player.Message("You are now an admin", 2f);
                     player.IsAdmin = true;
                     SaveAdmins();
                     break;
                 }
                 case ActionType.RevokeOP:
                 {
+                    player.Message("You are no longer an Andmin", 2f);
                     player.IsAdmin = false;
                     SaveAdmins();
                     break;
@@ -342,6 +351,7 @@ public class MyGameServer : GameServer<MyPlayer>
                 {
                     mGameModeIndex = (mGameModeIndex + 1) % mGameModes.Count;
                     mCurrentGameMode = mGameModes[mGameModeIndex];
+                    player.Message($"GameMode is now {mCurrentGameMode.Name}", 2f);
                     break;
                 }
                 // Add more cases for other ActionType values as needed
