@@ -180,15 +180,7 @@ public class MyGameServer : GameServer<MyPlayer>
 
     public override async Task OnConnected()
     {
-        try
-        {
-            await mCurrentGameMode.OnConnected();
-        }
-        catch
-        {
-            mCurrentGameMode = mGameModes[0];
-        }
-
+        mCurrentGameMode = mGameModes[0];
         await Console.Out.WriteLineAsync(GameIP + " Connected");
         await Console.Out.WriteLineAsync("Fetching configs");
         try
