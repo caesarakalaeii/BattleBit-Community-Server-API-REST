@@ -169,3 +169,7 @@ tools/Cake.CoreCLR
 # .env file contains default environment variables for docker
 .env
 .git/
+
+#TODO Change config to configs in Admin and Streamer fetching
+#config files
+configs*
