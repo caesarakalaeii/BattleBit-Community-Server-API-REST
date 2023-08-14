@@ -22,8 +22,7 @@ public class Swap : GameMode
         await Task.Run(() =>
         {
             var victimPos = onPlayerKillArguments.VictimPosition;
-            onPlayerKillArguments.Killer.Teleport(victimPos);
-            Console.WriteLine("attempting tp");
+            onPlayerKillArguments.Killer.Teleport(victimPos); // Non functional for now
             onPlayerKillArguments.Victim.Kill();
         });
     }

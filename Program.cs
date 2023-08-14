@@ -55,6 +55,7 @@ public class MyGameServer : GameServer<MyPlayer>
 
     private readonly List<GameMode> mGameModes = new()
     {
+        new LifeSteal(),
         new Swap(),
         new MeleeOnly(),
         new GunGame()
