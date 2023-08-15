@@ -103,14 +103,20 @@ public class TeamGunGame : GameMode
     public TeamGunGame()
     {
         Name = "TeamGunGame";
+        LevelA = 0;
+        LevelB = 0;
     }
 
     public override Task<OnPlayerSpawnArguments> OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
     {
-        var level = LevelB;
+        var level = 0;
         if (player.Team == Team.TeamA) level = LevelA;
+        else if (player.Team == Team.TeamB) level = LevelB;
 
         request.Loadout.PrimaryWeapon = ProgressionList[level];
+        request.Loadout.LightGadget = null;
+        request.Loadout.Throwable = null;
+        request.Loadout.FirstAid = null;
         request.Loadout.HeavyGadget = new Gadget("Sledge Hammer");
         return base.OnPlayerSpawning(player, request);
     }
@@ -123,10 +129,16 @@ public class TeamGunGame : GameMode
         return base.OnPlayerSpawned(player);
     }
 
+    public override Task OnRoundStarted()
+    {
+        ServerSettings.BleedingEnabled = false;
+        return base.OnRoundStarted();
+    }
+
     public override Task OnAPlayerDownedAnotherPlayer(OnPlayerKillArguments<MyPlayer> args)
     {
         args.Victim.Kill();
-        var level = LevelB;
+        int level;
         if (args.Killer.Team == Team.TeamA)
         {
             LevelA++;
@@ -135,6 +147,7 @@ public class TeamGunGame : GameMode
         else
         {
             LevelB++;
+            level = LevelB;
         }
 
         if (level == ProgressionList.Count)
@@ -145,6 +158,8 @@ public class TeamGunGame : GameMode
         {
             AnnounceLong($"{args.Killer.Team.ToString()} won the Game");
             ForceEndGame();
+            LevelA = 0;
+            LevelB = 0;
         }
 
         return base.OnAPlayerDownedAnotherPlayer(args);

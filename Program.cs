@@ -292,7 +292,7 @@ public class MyGameServer : GameServer<MyPlayer>
                 }
                 case ActionType.Start:
                 {
-                    player.Message("Forcing start");
+                    player.Message("Forcing start", 2f);
                     ForceStartGame();
                     break;
                 }
