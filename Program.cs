@@ -252,42 +252,42 @@ public class MyGameServer : GameServer<MyPlayer>
                 case ActionType.Heal:
                 {
                     player.Heal(c.Amount);
-                    player.Message($"{c.ExecutorName} has healed you for {c.Amount}");
+                    player.Message($"{c.ExecutorName} has healed you for {c.Amount}", 2f);
                     break;
                 }
                 case ActionType.Kill:
                 {
                     player.Kill();
-                    player.Message($"{c.ExecutorName} has killed you");
+                    player.Message($"{c.ExecutorName} has killed you", 2f);
                     break;
                 }
                 case ActionType.Grenade:
                 {
                     //can't spawn stuff, also no playerPOS 
-                    player.Message($"{c.ExecutorName} has spawned a grenade on you");
+                    player.Message($"{c.ExecutorName} has spawned a grenade on you", 2f);
                     break;
                 }
                 case ActionType.Teleport:
                 {
                     //relative teleport????
-                    player.Message($"{c.ExecutorName} has teleported you {c.Data}");
+                    player.Message($"{c.ExecutorName} has teleported you {c.Data}", 2f);
                     break;
                 }
                 case ActionType.Speed:
                 {
                     player.SetRunningSpeedMultiplier(c.Amount);
-                    player.Message($"{c.ExecutorName} has set your speed to {c.Amount}x");
+                    player.Message($"{c.ExecutorName} has set your speed to {c.Amount}x", 2f);
                     break;
                 }
                 case ActionType.Reveal:
                 {
                     //set marker on Map
-                    player.Message($"{c.ExecutorName} has revealed your Position");
+                    player.Message($"{c.ExecutorName} has revealed your Position", 2f);
                     break;
                 }
                 case ActionType.ChangeAmmo:
                 {
-                    player.Message($"{c.ExecutorName} has set your Ammo to {c.Amount}");
+                    player.Message($"{c.ExecutorName} has set your Ammo to {c.Amount}", 2f);
                     break;
                 }
                 case ActionType.Start:
@@ -304,13 +304,13 @@ public class MyGameServer : GameServer<MyPlayer>
                 case ActionType.ChangeDamage:
                 {
                     player.SetGiveDamageMultiplier(c.Amount);
-                    player.Message($"{c.ExecutorName} has set your Dmg Multiplier to {c.Amount}");
+                    player.Message($"{c.ExecutorName} has set your Dmg Multiplier to {c.Amount}", 2f);
                     break;
                 }
                 case ActionType.ChangeReceivedDamage:
                 {
                     player.SetReceiveDamageMultiplier(c.Amount);
-                    player.Message($"{c.ExecutorName} has set your recieve Dmg Multiplier to {c.Amount}");
+                    player.Message($"{c.ExecutorName} has set your recieve Dmg Multiplier to {c.Amount}", 2f);
                     break;
                 }
                 case ActionType.SetStreamer:

@@ -11,9 +11,9 @@ public class TeamGunGame : GameMode
     {
         new WeaponItem
         {
-            Tool = Weapons.DesertEagle,
+            Tool = Weapons.FAL,
             MainSight = Attachments.RedDot,
-            TopSight = Attachments.PTR40Hunter,
+            TopSight = null,
             CantedSight = null,
             Barrel = null,
             SideRail = null,
@@ -23,8 +23,8 @@ public class TeamGunGame : GameMode
 
         new WeaponItem
         {
-            Tool = Weapons.Glock18,
-            MainSight = Attachments.RedDot,
+            Tool = Weapons.M249,
+            MainSight = Attachments.Acog,
             TopSight = null,
             CantedSight = null,
             Barrel = null,
@@ -111,27 +111,6 @@ public class TeamGunGame : GameMode
         if (player.Team == Team.TeamA) level = LevelA;
 
         request.Loadout.PrimaryWeapon = ProgressionList[level];
-        request.Loadout.SecondaryWeapon = new WeaponItem
-        {
-            ToolName = "Desert Eagle",
-            MainSightName = null,
-            TopSightName = null,
-            CantedSightName = null,
-            BarrelName = null,
-            SideRailName = null,
-            UnderRailName = null,
-            BoltActionName = null,
-            SkinIndex = 0,
-            MagazineIndex = 0,
-            Tool = null,
-            MainSight = Attachments.PTR40Hunter,
-            TopSight = null,
-            CantedSight = null,
-            Barrel = null,
-            SideRail = null,
-            UnderRail = null,
-            BoltAction = null
-        };
         request.Loadout.HeavyGadget = new Gadget("Sledge Hammer");
         return base.OnPlayerSpawning(player, request);
     }
