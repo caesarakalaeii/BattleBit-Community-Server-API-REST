@@ -132,8 +132,6 @@ public class MyGameServer : GameServer<MyPlayer>
 
     public override Task OnPlayerJoiningToServer(ulong steamID, PlayerJoiningArguments args)
     {
-        TryGetPlayer(steamID, out var player);
-        player.Message($"Current GameMode is: {mCurrentGameMode.Name}", 4f);
         args.Stats.Progress.Rank = 200;
         args.Stats.Progress.Prestige = 10;
 
@@ -242,7 +240,7 @@ public class MyGameServer : GameServer<MyPlayer>
     {
         await Console.Out.WriteLineAsync(player.Name + " Connected");
         if (!mListedStreamers.Contains(player.SteamID)) return true;
-
+        player.Message($"Current GameMode is: {mCurrentGameMode.Name}", 4f);
         player.IsStreamer = true;
         if (!mAdmins.Contains(player.SteamID)) return true;
 
