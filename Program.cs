@@ -19,6 +19,10 @@ internal class Program
 public class GameMode : GameServer<MyPlayer>
 {
     public string Name = string.Empty;
+
+    public virtual void Reset()
+    {
+    }
 }
 
 public class MyPlayer : Player<MyPlayer>
@@ -336,7 +340,7 @@ public class MyGameServer : GameServer<MyPlayer>
                 }
                 case ActionType.RevokeOP:
                 {
-                    player.Message("You are no longer an Andmin", 2f);
+                    player.Message("You are no longer an Admin", 2f);
                     player.IsAdmin = false;
                     SaveAdmins();
                     break;
@@ -347,6 +351,19 @@ public class MyGameServer : GameServer<MyPlayer>
                     mCurrentGameMode = mGameModes[mGameModeIndex];
                     AnnounceShort($"GameMode is now {mCurrentGameMode.Name}");
                     Console.WriteLine($"GameMode is now {mCurrentGameMode.Name}");
+                    mCurrentGameMode.Reset();
+                    break;
+                }
+                case ActionType.SetGameMode:
+                {
+                    foreach (var gameMode in mGameModes)
+                        if (gameMode.Name == c.ExecutorName)
+                        {
+                            mCurrentGameMode = gameMode;
+                            mGameModeIndex = mGameModes.IndexOf(gameMode);
+                        }
+
+                    mCurrentGameMode.Reset();
                     break;
                 }
                 // Add more cases for other ActionType values as needed

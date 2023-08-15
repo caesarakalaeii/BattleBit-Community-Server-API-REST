@@ -114,6 +114,7 @@ public class TeamGunGame : GameMode
         else if (player.Team == Team.TeamB) level = LevelB;
 
         request.Loadout.PrimaryWeapon = ProgressionList[level];
+        request.Loadout.SecondaryWeapon = default;
         request.Loadout.LightGadget = null;
         request.Loadout.Throwable = null;
         request.Loadout.FirstAid = null;
@@ -158,10 +159,22 @@ public class TeamGunGame : GameMode
         {
             AnnounceLong($"{args.Killer.Team.ToString()} won the Game");
             ForceEndGame();
-            LevelA = 0;
-            LevelB = 0;
+            Reset();
         }
 
         return base.OnAPlayerDownedAnotherPlayer(args);
+    }
+
+
+    public override void Reset()
+    {
+        LevelA = 0;
+        LevelB = 0;
+   
+        foreach (var player in AllPlayers)
+        {
+            player.Kill();
+        }
+    
     }
 }

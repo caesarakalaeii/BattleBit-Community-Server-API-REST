@@ -18,4 +18,12 @@ public class MeleeOnly : GameMode
         player.SetJumpMultiplier(1.5f);
         return base.OnPlayerSpawning(player, request);
     }
+
+    public override void Reset()
+    {
+        foreach (var player in AllPlayers)
+        {
+            player.Kill();
+        }
+    }
 }

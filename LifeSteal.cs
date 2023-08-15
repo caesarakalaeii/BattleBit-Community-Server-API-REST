@@ -23,4 +23,11 @@ public class LifeSteal : GameMode
         player.SetJumpMultiplier(1.5f);
         return base.OnPlayerSpawned(player);
     }
+    public override void Reset()
+    {
+        foreach (var player in AllPlayers)
+        {
+            player.Kill();
+        }
+    }
 }

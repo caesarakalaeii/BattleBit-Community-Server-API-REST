@@ -410,3 +410,24 @@ public class NextGameModeCommand : APICommand
         return c;
     }
 }
+
+public class SetGameModeCommand : APICommand
+{
+    public SetGameModeCommand()
+    {
+        CommandPrefix = "!setGM";
+        Help = "'GameMode': switches to the specified gamemode if it's in the playlist";
+    }
+
+    public override Command ChatCommand(MyPlayer player, ChatChannel channel, string msg)
+    {
+        var split = msg.Split();
+        var c = new Command
+        {
+            StreamerId = player.SteamID,
+            Action = ActionType.SetGameMode,
+            ExecutorName = split[1]
+        };
+        return c;
+    }
+}

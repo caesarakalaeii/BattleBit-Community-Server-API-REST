@@ -26,4 +26,11 @@ public class Swap : GameMode
             onPlayerKillArguments.Victim.Kill();
         });
     }
+    public override void Reset()
+    {
+        foreach (var player in AllPlayers)
+        {
+            player.Kill();
+        }
+    }
 }

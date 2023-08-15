@@ -1,15 +1,9 @@
 using BattleBitAPI.Common;
-using BattleBitAPI.Server;
 
 namespace CommunityServerAPI;
 
 public class GunGame : GameMode
 {
-    public GunGame()
-    {
-        Name = "GunGame";
-    }
-    
     private readonly List<Weapon> mGunGame = new()
     {
         Weapons.Glock18,
@@ -33,6 +27,11 @@ public class GunGame : GameMode
         Weapons.SCARH,
         Weapons.SSG69
     };
+
+    public GunGame()
+    {
+        Name = "GunGame";
+    }
 
     // Gun Game
     public override async Task<OnPlayerSpawnArguments> OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
@@ -89,10 +88,16 @@ public class GunGame : GameMode
 
     public override Task OnRoundEnded()
     {
-        foreach (var player in AllPlayers) player.Level = 0;
+        Reset();
         return base.OnRoundEnded();
     }
 
-   
-
+    public override void Reset()
+    {
+        foreach (var player in AllPlayers)
+        {
+            player.Level = 0;
+            player.Kill();
+        }
+    }
 }

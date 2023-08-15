@@ -17,5 +17,6 @@ public enum ActionType
     RemoveStreamer,
     GrantOP,
     RevokeOP,
-    NextGameMode
+    NextGameMode,
+    SetGameMode
 }
