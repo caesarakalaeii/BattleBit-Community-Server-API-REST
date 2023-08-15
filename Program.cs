@@ -27,8 +27,6 @@ public class GameMode : GameServer<MyPlayer>
 
 public class MyPlayer : Player<MyPlayer>
 {
-    public bool IsAdmin;
-    public bool IsStreamer;
     public int Level;
 }
 
@@ -148,7 +146,7 @@ public class MyGameServer : GameServer<MyPlayer>
             FetchAdmins();
         }
 
-        if (!player.IsAdmin) return true;
+        if (!mAdmins.Contains(player.SteamID)) return true;
         var splits = msg.Split(" ");
         foreach (var command in mChatCommands)
             if (splits[0] == command.CommandPrefix)
@@ -257,10 +255,6 @@ public class MyGameServer : GameServer<MyPlayer>
         await Console.Out.WriteLineAsync(player.Name + " Connected");
         if (!mListedStreamers.Contains(player.SteamID)) return true;
         player.Message($"Current GameMode is: {mCurrentGameMode.Name}", 4f);
-        player.IsStreamer = true;
-        if (!mAdmins.Contains(player.SteamID)) return true;
-
-        player.IsAdmin = true;
         return true;
     }
 
@@ -270,7 +264,7 @@ public class MyGameServer : GameServer<MyPlayer>
         // need testing if blocking
         foreach (var player in AllPlayers)
         {
-            if (!player.IsStreamer) continue;
+            if (!mListedStreamers.Contains(player.SteamID)) continue;
             if (player.SteamID != c.StreamerId) continue;
             switch (c.Action)
             {
@@ -341,28 +335,28 @@ public class MyGameServer : GameServer<MyPlayer>
                 case ActionType.SetStreamer:
                 {
                     player.Message("You are now a streamer", 2f);
-                    player.IsStreamer = true;
+                    mListedStreamers.Add(player.SteamID);
                     SaveStreamers();
                     break;
                 }
                 case ActionType.RemoveStreamer:
                 {
                     player.Message("You are no longer a streamer", 2f);
-                    player.IsStreamer = false;
+                    mListedStreamers.Remove(player.SteamID);
                     SaveStreamers();
                     break;
                 }
                 case ActionType.GrantOP:
                 {
                     player.Message("You are now an admin", 2f);
-                    player.IsAdmin = true;
+                    mAdmins.Add(player.SteamID);
                     SaveAdmins();
                     break;
                 }
                 case ActionType.RevokeOP:
                 {
                     player.Message("You are no longer an Admin", 2f);
-                    player.IsAdmin = false;
+                    mAdmins.Remove(player.SteamID);
                     SaveAdmins();
                     break;
                 }
