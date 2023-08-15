@@ -352,6 +352,7 @@ public class MyGameServer : GameServer<MyPlayer>
                 }
                 case ActionType.NextGameMode:
                 {
+                    mCurrentGameMode.Reset();
                     mGameModeIndex = (mGameModeIndex + 1) % mGameModes.Count;
                     mCurrentGameMode = mGameModes[mGameModeIndex];
                     AnnounceShort($"GameMode is now {mCurrentGameMode.Name}");
@@ -361,6 +362,7 @@ public class MyGameServer : GameServer<MyPlayer>
                 }
                 case ActionType.SetGameMode:
                 {
+                    mCurrentGameMode.Reset();
                     foreach (var gameMode in mGameModes)
                         if (gameMode.Name == c.ExecutorName)
                         {
