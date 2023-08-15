@@ -14,7 +14,7 @@ public class TeamGunGame : GameMode
             Tool = Weapons.DesertEagle,
             MainSight = Attachments.RedDot,
             TopSight = Attachments.PTR40Hunter,
-            CantedSight = Attachments._20xScope,
+            CantedSight = null,
             Barrel = null,
             SideRail = null,
             UnderRail = null,
@@ -132,19 +132,42 @@ public class TeamGunGame : GameMode
             UnderRail = null,
             BoltAction = null
         };
-        request.Loadout.PrimaryExtraMagazines = 5;
         request.Loadout.HeavyGadget = new Gadget("Sledge Hammer");
         return base.OnPlayerSpawning(player, request);
+    }
+
+    public override Task OnPlayerSpawned(MyPlayer player)
+    {
+        player.SetRunningSpeedMultiplier(1.25f);
+        player.SetFallDamageMultiplier(0f);
+        player.SetJumpMultiplier(1.5f);
+        return base.OnPlayerSpawned(player);
     }
 
     public override Task OnAPlayerDownedAnotherPlayer(OnPlayerKillArguments<MyPlayer> args)
     {
         args.Victim.Kill();
+        var level = LevelB;
         if (args.Killer.Team == Team.TeamA)
+        {
             LevelA++;
+            level = LevelA;
+        }
         else
+        {
             LevelB++;
-        
+        }
+
+        if (level == ProgressionList.Count)
+        {
+            AnnounceShort($"{args.Killer.Team.ToString()} only needs 1 more Kill");
+        }
+        else if (level > ProgressionList.Count)
+        {
+            AnnounceLong($"{args.Killer.Team.ToString()} won the Game");
+            ForceEndGame();
+        }
+
         return base.OnAPlayerDownedAnotherPlayer(args);
     }
 }
