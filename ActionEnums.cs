@@ -18,5 +18,6 @@ public enum ActionType
     GrantOP,
     RevokeOP,
     NextGameMode,
-    SetGameMode
+    SetGameMode,
+    TogglePlaylist
 }

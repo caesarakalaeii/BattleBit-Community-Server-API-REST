@@ -34,7 +34,11 @@ public class MyPlayer : Player<MyPlayer>
 
 public class MyGameServer : GameServer<MyPlayer>
 {
-    private readonly List<APICommand> ChatCommands = new()
+    private const string AdminJson = "./config/admins.json";
+    private const string SteamIdJson = "./config/streamer_steamids.json";
+    private readonly List<ulong> mAdmins = new();
+
+    private readonly List<APICommand> mChatCommands = new()
     {
         new HealCommand(),
         new KillCommand(),
@@ -51,12 +55,10 @@ public class MyGameServer : GameServer<MyPlayer>
         new RemoveStreamerCommand(),
         new OpCommand(),
         new DeopCommand(),
-        new NextGameModeCommand()
+        new NextGameModeCommand(),
+        new SetGameModeCommand(),
+        new TogglePlaylistCommand()
     };
-
-
-    private readonly string mAdminJson = "./config/admins.json";
-    private readonly List<ulong> mAdmins = new();
 
     private readonly List<GameMode> mGameModes = new()
     {
@@ -70,9 +72,10 @@ public class MyGameServer : GameServer<MyPlayer>
 
     //public CommandQueue queue = new();
     private readonly List<ulong> mListedStreamers = new();
-    private readonly string mSteamIdJson = "./config/streamer_steamids.json";
 
     private GameMode mCurrentGameMode = new GunGame();
+
+    private bool mCyclePlaylist;
     private int mGameModeIndex;
 
     //modular GameModes: CHECK if new Gamemodes need more passthrough
@@ -101,7 +104,7 @@ public class MyGameServer : GameServer<MyPlayer>
 
     public override Task OnRoundEnded()
     {
-        mGameModeIndex = (mGameModeIndex + 1) % mGameModes.Count;
+        if (mCyclePlaylist) mGameModeIndex = (mGameModeIndex + 1) % mGameModes.Count;
         return mCurrentGameMode.OnRoundEnded();
     }
 
@@ -138,7 +141,7 @@ public class MyGameServer : GameServer<MyPlayer>
     {
         if (!player.IsAdmin) return true;
         var splits = msg.Split(" ");
-        foreach (var command in ChatCommands)
+        foreach (var command in mChatCommands)
             if (splits[0] == command.CommandPrefix)
             {
                 var c = command.ChatCommand(player, channel, msg);
@@ -158,7 +161,7 @@ public class MyGameServer : GameServer<MyPlayer>
                 JsonSerializer.Serialize(mListedStreamers, new JsonSerializerOptions { WriteIndented = true });
 
             // Write the JSON to the file, overwriting its content
-            File.WriteAllText(mSteamIdJson, newJson);
+            File.WriteAllText(SteamIdJson, newJson);
 
             Console.WriteLine("Steam IDs updated and saved to the file.");
         }
@@ -176,7 +179,7 @@ public class MyGameServer : GameServer<MyPlayer>
                 JsonSerializer.Serialize(mAdmins, new JsonSerializerOptions { WriteIndented = true });
 
             // Write the JSON to the file, overwriting its content
-            File.WriteAllText(mAdminJson, newJson);
+            File.WriteAllText(AdminJson, newJson);
 
             Console.WriteLine("Admins updated and saved to the file.");
         }
@@ -200,7 +203,7 @@ public class MyGameServer : GameServer<MyPlayer>
         try
         {
             // Read the entire JSON file as a string
-            var jsonFilePath = mSteamIdJson;
+            var jsonFilePath = SteamIdJson;
             var jsonString = File.ReadAllText(jsonFilePath);
 
             // Parse the JSON array using System.Text.Json
@@ -216,7 +219,7 @@ public class MyGameServer : GameServer<MyPlayer>
         try
         {
             // Read the entire JSON file as a string
-            var jsonFilePath = mAdminJson;
+            var jsonFilePath = AdminJson;
             var jsonString = File.ReadAllText(jsonFilePath);
 
             // Parse the JSON array using System.Text.Json
@@ -302,7 +305,7 @@ public class MyGameServer : GameServer<MyPlayer>
                 }
                 case ActionType.Help:
                 {
-                    foreach (var command in ChatCommands) SayToChat($"{command.CommandPrefix} {command.Help}");
+                    foreach (var command in mChatCommands) SayToChat($"{command.CommandPrefix} {command.Help}");
                     break;
                 }
                 case ActionType.ChangeDamage:
@@ -363,7 +366,14 @@ public class MyGameServer : GameServer<MyPlayer>
                             mGameModeIndex = mGameModes.IndexOf(gameMode);
                         }
 
+                    AnnounceShort($"GameMode is now {mCurrentGameMode.Name}");
                     mCurrentGameMode.Reset();
+                    break;
+                }
+                case ActionType.TogglePlaylist:
+                {
+                    mCyclePlaylist = !mCyclePlaylist;
+                    AnnounceShort($"GameModePlaylist is now {mCyclePlaylist}");
                     break;
                 }
                 // Add more cases for other ActionType values as needed
@@ -378,8 +388,4 @@ public class MyGameServer : GameServer<MyPlayer>
         stats.Roles = Roles.Admin;
     }
     */
-    public override Task OnSavePlayerStats(ulong steamID, PlayerStats stats)
-    {
-        return base.OnSavePlayerStats(steamID, stats);
-    }
 }

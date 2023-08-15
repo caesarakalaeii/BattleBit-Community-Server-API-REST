@@ -431,3 +431,24 @@ public class SetGameModeCommand : APICommand
         return c;
     }
 }
+
+public class TogglePlaylistCommand : APICommand
+{
+    public TogglePlaylistCommand()
+    {
+        CommandPrefix = "!togglePlaylist";
+        Help = ": toggles aotu switching GameModes on round end";
+    }
+
+    public override Command ChatCommand(MyPlayer player, ChatChannel channel, string msg)
+    {
+        var split = msg.Split();
+        var c = new Command
+        {
+            StreamerId = player.SteamID,
+            Action = ActionType.TogglePlaylist,
+            ExecutorName = "Chat Test"
+        };
+        return c;
+    }
+}
