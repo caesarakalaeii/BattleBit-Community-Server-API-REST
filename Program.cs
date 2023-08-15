@@ -141,6 +141,13 @@ public class MyGameServer : GameServer<MyPlayer>
 
     public override async Task<bool> OnPlayerTypedMessage(MyPlayer player, ChatChannel channel, string msg)
     {
+        if (msg.StartsWith("!fetch"))
+        {
+            player.Message("Fetching Admins and Streamers", 2f);
+            FetchStreamers();
+            FetchAdmins();
+        }
+
         if (!player.IsAdmin) return true;
         var splits = msg.Split(" ");
         foreach (var command in mChatCommands)
@@ -197,11 +204,9 @@ public class MyGameServer : GameServer<MyPlayer>
         return base.OnReconnected();
     }
 
-    public override async Task OnConnected()
+    public void FetchStreamers()
     {
-        mCurrentGameMode = mGameModes[mGameModeIndex];
-        await Console.Out.WriteLineAsync(GameIP + " Connected");
-        await Console.Out.WriteLineAsync("Fetching configs");
+        Console.Out.WriteLine("Fetching configs");
         try
         {
             // Read the entire JSON file as a string
@@ -211,13 +216,16 @@ public class MyGameServer : GameServer<MyPlayer>
             // Parse the JSON array using System.Text.Json
             var steamIds = JsonSerializer.Deserialize<ulong[]>(jsonString);
             foreach (var steamId in steamIds) mListedStreamers.Add(steamId);
-            await Console.Out.WriteLineAsync("Fetching streamers succeeded");
+            Console.Out.WriteLine("Fetching streamers succeeded");
         }
         catch (Exception ex)
         {
-            await Console.Out.WriteLineAsync("Fetching streamers failed: " + ex);
+            Console.Out.WriteLine("Fetching streamers failed: " + ex);
         }
+    }
 
+    public void FetchAdmins()
+    {
         try
         {
             // Read the entire JSON file as a string
@@ -227,12 +235,20 @@ public class MyGameServer : GameServer<MyPlayer>
             // Parse the JSON array using System.Text.Json
             var steamIds = JsonSerializer.Deserialize<ulong[]>(jsonString);
             foreach (var steamId in steamIds) mAdmins.Add(steamId);
-            await Console.Out.WriteLineAsync("Fetching admins succeeded");
+            Console.Out.WriteLine("Fetching admins succeeded");
         }
         catch (Exception ex)
         {
-            await Console.Out.WriteLineAsync("Fetching admins failed: " + ex);
+            Console.Out.WriteLine("Fetching admins failed: " + ex);
         }
+    }
+
+    public override async Task OnConnected()
+    {
+        mCurrentGameMode = mGameModes[mGameModeIndex];
+        await Console.Out.WriteLineAsync(GameIP + " Connected");
+        FetchStreamers();
+        FetchAdmins();
     }
 
 
