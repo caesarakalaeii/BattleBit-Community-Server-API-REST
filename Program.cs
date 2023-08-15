@@ -199,7 +199,7 @@ public class MyGameServer : GameServer<MyPlayer>
 
     public override async Task OnConnected()
     {
-        mCurrentGameMode = mGameModes[0];
+        mCurrentGameMode = mGameModes[mGameModeIndex];
         await Console.Out.WriteLineAsync(GameIP + " Connected");
         await Console.Out.WriteLineAsync("Fetching configs");
         try
