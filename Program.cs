@@ -52,7 +52,6 @@ public class MyGameServer : GameServer<MyPlayer>
         new TogglePlaylistCommand()
     };
 
-    private readonly List<GameMode> mGameModes;
     private readonly List<ulong> mListedStreamers = new();
 
     private GameMode mCurrentGameMode;
@@ -60,21 +59,7 @@ public class MyGameServer : GameServer<MyPlayer>
     private bool mCyclePlaylist;
     private int mGameModeIndex;
 
-    public MyGameServer()
-    {
-        mGameModes = new List<GameMode>
-        {
-            new GunGame(this),
-            new TeamGunGame(this),
-            new LifeSteal(this),
-            new Swap(this),
-            new Hardcore(this),
-            new MeleeOnly(this),
-            new CSGO(this)
-        };
-        mGameModeIndex = 0;
-        mCurrentGameMode = mGameModes[mGameModeIndex];
-    }
+    private List<GameMode> mGameModes;
 
     //public CommandQueue queue = new();
 
@@ -247,6 +232,17 @@ public class MyGameServer : GameServer<MyPlayer>
 
     public override async Task OnConnected()
     {
+        mGameModes = new List<GameMode>
+        {
+            new GunGame(this),
+            new TeamGunGame(this),
+            new LifeSteal(this),
+            new Swap(this),
+            new Hardcore(this),
+            new MeleeOnly(this),
+            new CSGO(this)
+        };
+        mGameModeIndex = 0;
         mCurrentGameMode = mGameModes[mGameModeIndex];
         await Console.Out.WriteLineAsync(GameIP + " Connected");
         FetchStreamers();
