@@ -1,8 +1,10 @@
-﻿namespace CommunityServerAPI.server_utilities;
+﻿using BattleBitAPI.Server;
+
+namespace CommunityServerAPI.GameModes;
 
 public class Hardcore : GameMode
 {
-    public Hardcore()
+    public Hardcore(GameServer<MyPlayer> reference) : base(reference)
     {
         Name = "Hardcore";
     }

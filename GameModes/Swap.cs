@@ -1,10 +1,11 @@
 ﻿using BattleBitAPI.Common;
+using BattleBitAPI.Server;
 
-namespace CommunityServerAPI;
+namespace CommunityServerAPI.GameModes;
 
 public class Swap : GameMode
 {
-    public Swap()
+    public Swap(GameServer<MyPlayer> reference) : base(reference)
     {
         Name = "Swappers";
     }
@@ -25,10 +26,5 @@ public class Swap : GameMode
             onPlayerKillArguments.Killer.Teleport(victimPos); // Non functional for now
             onPlayerKillArguments.Victim.Kill();
         });
-    }
-
-    public override void Reset()
-    {
-        foreach (var player in AllPlayers) player.Kill();
     }
 }

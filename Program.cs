@@ -2,10 +2,11 @@
 using BattleBitAPI;
 using BattleBitAPI.Common;
 using BattleBitAPI.Server;
-using CommunityServerAPI;
-using CommunityServerAPI.server_utilities;
+using CommunityServerAPI.GameModes;
 
-internal class MyProgram
+namespace CommunityServerAPI;
+
+internal abstract class MyProgram
 {
     private static void Main(string[] args)
     {
@@ -20,9 +21,16 @@ internal class MyProgram
 public class GameMode : GameServer<MyPlayer>
 {
     public string Name = string.Empty;
+    protected GameServer<MyPlayer> r;
+
+    protected GameMode(GameServer<MyPlayer> reference)
+    {
+        r = reference;
+    }
 
     public virtual void Reset()
     {
+        foreach (var player in r.AllPlayers) player.Kill();
     }
 
     public override Task OnRoundEnded()
@@ -32,12 +40,12 @@ public class GameMode : GameServer<MyPlayer>
     }
 }
 
-public class MyPlayer : Player<MyPlayer>
+public abstract class MyPlayer : Player<MyPlayer>
 {
     public int Level;
 }
 
-public class MyGameServer : GameServer<MyPlayer>
+public abstract class MyGameServer : GameServer<MyPlayer>
 {
     private const string AdminJson = "./config/admins.json";
     private const string SteamIdJson = "./config/streamer_steamids.json";
@@ -66,25 +74,30 @@ public class MyGameServer : GameServer<MyPlayer>
         new TogglePlaylistCommand()
     };
 
-    private readonly List<GameMode> mGameModes = new()
-    {
-        new GunGame(),
-        new TeamGunGame(),
-        new LifeSteal(),
-        new Swap(),
-        new Hardcore(),
-        new MeleeOnly()
-    };
+    private readonly List<GameMode> mGameModes;
 
     //public CommandQueue queue = new();
     private readonly List<ulong> mListedStreamers = new();
 
-    private GameMode mCurrentGameMode = new GunGame();
+    private GameMode mCurrentGameMode;
 
     private bool mCyclePlaylist;
     private int mGameModeIndex;
 
 
+    public MyGameServer()
+    {
+        mGameModes = new List<GameMode>
+        {
+            new GunGame(this),
+            new TeamGunGame(this),
+            new LifeSteal(this),
+            new Swap(this),
+            new Hardcore(this),
+            new MeleeOnly(this)
+        };
+        mCurrentGameMode = mGameModes[0];
+    }
     //modular GameModes: CHECK if new Gamemodes need more passthrough
 
 
@@ -375,6 +388,7 @@ public class MyGameServer : GameServer<MyPlayer>
                 {
                     mGameModeIndex = (mGameModeIndex + 1) % mGameModes.Count;
                     mCurrentGameMode = mGameModes[mGameModeIndex];
+                    mCurrentGameMode.Reset();
                     AnnounceShort($"GameMode is now {mCurrentGameMode.Name}");
                     Console.WriteLine($"GameMode is now {mCurrentGameMode.Name}");
                     break;
@@ -388,7 +402,9 @@ public class MyGameServer : GameServer<MyPlayer>
                             mGameModeIndex = mGameModes.IndexOf(gameMode);
                         }
 
+                    mCurrentGameMode.Reset();
                     AnnounceShort($"GameMode is now {mCurrentGameMode.Name}");
+
                     break;
                 }
                 case ActionType.GetGameMode:

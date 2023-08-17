@@ -1,6 +1,7 @@
 using BattleBitAPI.Common;
+using BattleBitAPI.Server;
 
-namespace CommunityServerAPI;
+namespace CommunityServerAPI.GameModes;
 
 public class GunGame : GameMode
 {
@@ -28,7 +29,7 @@ public class GunGame : GameMode
         Weapons.SSG69
     };
 
-    public GunGame()
+    public GunGame(GameServer<MyPlayer> reference) : base(reference)
     {
         Name = "GunGame";
     }
@@ -92,7 +93,7 @@ public class GunGame : GameMode
     public override void Reset()
     {
         SayToChat("Resetting GameMode");
-        foreach (var player in AllPlayers)
+        foreach (var player in r.AllPlayers)
         {
             player.Level = 0;
             player.Kill();

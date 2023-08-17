@@ -1,10 +1,11 @@
 ﻿using BattleBitAPI.Common;
+using BattleBitAPI.Server;
 
-namespace CommunityServerAPI;
+namespace CommunityServerAPI.GameModes;
 
 public class MeleeOnly : GameMode
 {
-    public MeleeOnly()
+    public MeleeOnly(GameServer<MyPlayer> reference) : base(reference)
     {
         Name = "MeleeOnly";
     }
@@ -16,10 +17,5 @@ public class MeleeOnly : GameMode
         player.Modifications.FallDamageMultiplier = 0f;
         player.Modifications.JumpHeightMultiplier = 1.5f;
         return base.OnPlayerSpawning(player, request);
-    }
-
-    public override void Reset()
-    {
-        foreach (var player in AllPlayers) player.Kill();
     }
 }

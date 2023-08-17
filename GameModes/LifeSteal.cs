@@ -1,10 +1,11 @@
 ﻿using BattleBitAPI.Common;
+using BattleBitAPI.Server;
 
-namespace CommunityServerAPI;
+namespace CommunityServerAPI.GameModes;
 
 public class LifeSteal : GameMode
 {
-    public LifeSteal()
+    public LifeSteal(GameServer<MyPlayer> reference) : base(reference)
     {
         Name = "LifeSteal";
     }
@@ -24,10 +25,5 @@ public class LifeSteal : GameMode
         player.Modifications.JumpHeightMultiplier = 1.5f;
         player.Modifications.DisableBleeding();
         return base.OnPlayerSpawned(player);
-    }
-
-    public override void Reset()
-    {
-        foreach (var player in AllPlayers) player.Kill();
     }
 }

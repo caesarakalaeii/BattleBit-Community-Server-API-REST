@@ -1,6 +1,7 @@
 ﻿using BattleBitAPI.Common;
+using BattleBitAPI.Server;
 
-namespace CommunityServerAPI;
+namespace CommunityServerAPI.GameModes;
 
 public class TeamGunGame : GameMode
 {
@@ -100,7 +101,7 @@ public class TeamGunGame : GameMode
         }
     };
 
-    public TeamGunGame()
+    public TeamGunGame(GameServer<MyPlayer> reference) : base(reference)
     {
         Name = "TeamGunGame";
         LevelA = 0;
@@ -167,6 +168,6 @@ public class TeamGunGame : GameMode
         LevelA = 0;
         LevelB = 0;
 
-        foreach (var player in AllPlayers) player.Kill();
+        base.Reset();
     }
 }
