@@ -5,7 +5,7 @@ using BattleBitAPI.Server;
 using CommunityServerAPI;
 using CommunityServerAPI.server_utilities;
 
-internal class Program
+internal class MyProgram
 {
     private static void Main(string[] args)
     {
