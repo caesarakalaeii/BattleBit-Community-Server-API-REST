@@ -24,6 +24,12 @@ public class GameMode : GameServer<MyPlayer>
     public virtual void Reset()
     {
     }
+
+    public override Task OnRoundEnded()
+    {
+        Reset();
+        return base.OnRoundEnded();
+    }
 }
 
 public class MyPlayer : Player<MyPlayer>
@@ -367,17 +373,14 @@ public class MyGameServer : GameServer<MyPlayer>
                 }
                 case ActionType.NextGameMode:
                 {
-                    mCurrentGameMode.Reset();
                     mGameModeIndex = (mGameModeIndex + 1) % mGameModes.Count;
                     mCurrentGameMode = mGameModes[mGameModeIndex];
                     AnnounceShort($"GameMode is now {mCurrentGameMode.Name}");
                     Console.WriteLine($"GameMode is now {mCurrentGameMode.Name}");
-                    mCurrentGameMode.Reset();
                     break;
                 }
                 case ActionType.SetGameMode:
                 {
-                    mCurrentGameMode.Reset();
                     foreach (var gameMode in mGameModes)
                         if (gameMode.Name == c.ExecutorName)
                         {
@@ -386,7 +389,6 @@ public class MyGameServer : GameServer<MyPlayer>
                         }
 
                     AnnounceShort($"GameMode is now {mCurrentGameMode.Name}");
-                    mCurrentGameMode.Reset();
                     break;
                 }
                 case ActionType.GetGameMode:

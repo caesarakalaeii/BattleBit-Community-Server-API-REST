@@ -88,11 +88,6 @@ public class GunGame : GameMode
         });
     }
 
-    public override Task OnRoundEnded()
-    {
-        Reset();
-        return base.OnRoundEnded();
-    }
 
     public override void Reset()
     {
