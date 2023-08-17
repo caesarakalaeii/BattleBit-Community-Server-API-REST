@@ -8,4 +8,8 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="CommandAPI.cs" />
+  </ItemGroup>
+
 </Project>
