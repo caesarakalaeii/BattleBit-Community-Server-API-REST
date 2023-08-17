@@ -16,11 +16,13 @@ public class LifeSteal : GameMode
         return base.OnAPlayerDownedAnotherPlayer(args);
     }
 
+
     public override Task OnPlayerSpawned(MyPlayer player)
     {
         player.Modifications.RunningSpeedMultiplier = 1.25f;
         player.Modifications.FallDamageMultiplier = 0f;
         player.Modifications.JumpHeightMultiplier = 1.5f;
+        player.Modifications.DisableBleeding();
         return base.OnPlayerSpawned(player);
     }
 

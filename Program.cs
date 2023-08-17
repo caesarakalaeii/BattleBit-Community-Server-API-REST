@@ -12,6 +12,7 @@ internal class MyProgram
         Console.WriteLine("Starting API");
         var listener = new ServerListener<MyPlayer, MyGameServer>();
         listener.Start(55669);
+
         Thread.Sleep(-1);
     }
 }
@@ -75,6 +76,7 @@ public class MyGameServer : GameServer<MyPlayer>
 
     private bool mCyclePlaylist;
     private int mGameModeIndex;
+
 
     //modular GameModes: CHECK if new Gamemodes need more passthrough
 
@@ -202,6 +204,7 @@ public class MyGameServer : GameServer<MyPlayer>
         return base.OnReconnected();
     }
 
+
     public void FetchStreamers()
     {
         Console.Out.WriteLine("Fetching configs");
@@ -255,6 +258,7 @@ public class MyGameServer : GameServer<MyPlayer>
         await Console.Out.WriteLineAsync(player.Name + " Connected");
         if (!mListedStreamers.Contains(player.SteamID)) return true;
         player.Message($"Current GameMode is: {mCurrentGameMode.Name}", 4f);
+
         return true;
     }
 

@@ -46,6 +46,7 @@ public class GunGame : GameMode
         player.Modifications.RunningSpeedMultiplier = 1.25f;
         player.Modifications.FallDamageMultiplier = 0f;
         player.Modifications.JumpHeightMultiplier = 1.5f;
+        player.Modifications.DisableBleeding();
         return base.OnPlayerSpawned(player);
     }
 

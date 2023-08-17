@@ -124,13 +124,14 @@ public class TeamGunGame : GameMode
 
     public override Task OnPlayerSpawned(MyPlayer player)
     {
+        player.Modifications.RespawnTime = 0f;
         player.Modifications.RunningSpeedMultiplier = 1.25f;
         player.Modifications.FallDamageMultiplier = 0f;
         player.Modifications.JumpHeightMultiplier = 1.5f;
         player.Modifications.DisableBleeding();
         return base.OnPlayerSpawned(player);
     }
-    
+
     public override Task OnAPlayerDownedAnotherPlayer(OnPlayerKillArguments<MyPlayer> args)
     {
         args.Victim.Kill();
@@ -165,11 +166,7 @@ public class TeamGunGame : GameMode
     {
         LevelA = 0;
         LevelB = 0;
-   
-        foreach (var player in AllPlayers)
-        {
-            player.Kill();
-        }
-    
+
+        foreach (var player in AllPlayers) player.Kill();
     }
 }
