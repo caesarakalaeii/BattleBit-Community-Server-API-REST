@@ -2,23 +2,21 @@
 
 namespace CommunityServerAPI;
 
-public class CSGO : GameMode
+public class Csgo : GameMode
 {
-    public CSGO(MyGameServer r) : base(r)
+    public Csgo(MyGameServer r) : base(r)
     {
         Name = "CSGO";
     }
 
     public override void Init()
     {
-        R.ServerSettings.PlayerCollision = true;
-        R.ServerSettings.FriendlyFireEnabled = true;
+        ServerSettings.PlayerCollision = true;
+        ServerSettings.FriendlyFireEnabled = true;
         if (Gamemode != "Rush")
         {
             // dunno
         }
-
-        base.Init();
     }
     //Buy system maybe
 

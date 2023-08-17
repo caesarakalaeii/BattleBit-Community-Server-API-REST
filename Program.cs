@@ -72,7 +72,7 @@ public class MyGameServer : GameServer<MyPlayer>
             new Swap(this),
             new Hardcore(this),
             new MeleeOnly(this),
-            new CSGO(this)
+            new Csgo(this)
         };
         mGameModeIndex = 0;
         mCurrentGameMode = mGameModes[mGameModeIndex];
