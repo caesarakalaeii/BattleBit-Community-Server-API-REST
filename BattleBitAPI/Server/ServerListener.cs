@@ -216,22 +216,22 @@ public class ServerListener<TPlayer, TGameServer> : IDisposable where TPlayer : 
                     }
 
                     //Read the server name
-                    //string token;
-                    //{
-                    //    readStream.Reset();
-                    //    if (!await networkStream.TryRead(readStream, 2, source.Token))
-                    //        throw new Exception("Unable to read the Token Size");
-//
-                    //    int stringSize = readStream.ReadUInt16();
-                    //    if (stringSize > Const.MaxTokenSize)
-                    //        throw new Exception("Invalid token size");
-//
-                    //    readStream.Reset();
-                    //    if (!await networkStream.TryRead(readStream, stringSize, source.Token))
-                    //        throw new Exception("Unable to read the token");
-//
-                    //    token = readStream.ReadString(stringSize);
-                    //}
+                    string token;
+                    {
+                        readStream.Reset();
+                        if (!await networkStream.TryRead(readStream, 2, source.Token))
+                            throw new Exception("Unable to read the Token Size");
+
+                        int stringSize = readStream.ReadUInt16();
+                        if (stringSize > Const.MaxTokenSize)
+                            throw new Exception("Invalid token size");
+
+                        readStream.Reset();
+                        if (!await networkStream.TryRead(readStream, stringSize, source.Token))
+                            throw new Exception("Unable to read the token");
+
+                        token = readStream.ReadString(stringSize);
+                    }
 
                     //Read port
                     int gamePort;
@@ -242,11 +242,11 @@ public class ServerListener<TPlayer, TGameServer> : IDisposable where TPlayer : 
                         gamePort = readStream.ReadUInt16();
                     }
 
-                    //if (OnValidateGameServerToken != null)
-                    //    allow = await OnValidateGameServerToken(ip, (ushort)gamePort, token);
-//
-                    //if (!allow)
-                    //    throw new Exception("Token was not valid!");
+                    if (OnValidateGameServerToken != null)
+                        allow = await OnValidateGameServerToken(ip, (ushort)gamePort, token);
+
+                    if (!allow)
+                        throw new Exception("Token was not valid!");
 
                     //Read is server protected
                     bool isPasswordProtected;
@@ -596,18 +596,18 @@ public class ServerListener<TPlayer, TGameServer> : IDisposable where TPlayer : 
                         playerInternal.CurrentLoadout = loadout;
                         playerInternal.CurrentWearings = wearings;
 
-                        ////Modifications
-                        //{
-                        //    readStream.Reset();
-                        //    if (!await networkStream.TryRead(readStream, 4, source.Token))
-                        //        throw new Exception("Unable to read the Modifications Size");
-                        //    var modificationSize = (int)readStream.ReadUInt32();
-//
-                        //    readStream.Reset();
-                        //    if (!await networkStream.TryRead(readStream, modificationSize, source.Token))
-                        //        throw new Exception("Unable to read the Modifications");
-                        //    playerInternal._Modifications.Read(readStream);
-                        //}
+                        //Modifications
+                        {
+                            readStream.Reset();
+                            if (!await networkStream.TryRead(readStream, 4, source.Token))
+                                throw new Exception("Unable to read the Modifications Size");
+                            var modificationSize = (int)readStream.ReadUInt32();
+
+                            readStream.Reset();
+                            if (!await networkStream.TryRead(readStream, modificationSize, source.Token))
+                                throw new Exception("Unable to read the Modifications");
+                            playerInternal._Modifications.Read(readStream);
+                        }
 
                         //Call new instance callback if needed.
                         if (isNewClient)
