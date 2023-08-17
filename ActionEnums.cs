@@ -1,3 +1,5 @@
+namespace CommunityServerAPI;
+
 public enum ActionType
 {
     Heal,
@@ -5,7 +7,7 @@ public enum ActionType
     Grenade,
     Teleport,
     Speed,
-    ChangeAttachement,
+    ChangeAttachment,
     ChangeWeapon,
     Reveal,
     ChangeDamage,
@@ -15,9 +17,10 @@ public enum ActionType
     Start,
     SetStreamer,
     RemoveStreamer,
-    GrantOP,
-    RevokeOP,
+    GrantOp,
+    RevokeOp,
     NextGameMode,
     SetGameMode,
+    GetGameMode,
     TogglePlaylist
 }

@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using BattleBitAPI.Common;
+using CommunityServerAPI;
 
 namespace BattleBitAPI.Server;
 
@@ -148,7 +149,7 @@ public class ChangeAttachmentCommand : APICommand
         var c = new Command
         {
             StreamerId = Convert.ToUInt64(splits[1]),
-            Action = ActionType.ChangeAttachement,
+            Action = ActionType.ChangeAttachment,
             Amount = 0, // Not sure what this value represents, please adjust accordingly
             AttachmentChange = Utility.ParseAttachments(splits),
             ExecutorName = "Chat Test"
@@ -363,7 +364,7 @@ public class OpCommand : APICommand
         var c = new Command
         {
             StreamerId = Convert.ToUInt64(splits[1]),
-            Action = ActionType.GrantOP,
+            Action = ActionType.GrantOp,
             ExecutorName = "Chat Test"
         };
         return c;
@@ -384,7 +385,7 @@ public class DeopCommand : APICommand
         var c = new Command
         {
             StreamerId = Convert.ToUInt64(splits[1]),
-            Action = ActionType.RevokeOP,
+            Action = ActionType.RevokeOp,
             ExecutorName = "Chat Test"
         };
         return c;
@@ -448,6 +449,26 @@ public class TogglePlaylistCommand : APICommand
             StreamerId = player.SteamID,
             Action = ActionType.TogglePlaylist,
             ExecutorName = "Chat Test"
+        };
+        return c;
+    }
+}
+
+public class GetGameModeCommand : APICommand
+{
+    public GetGameModeCommand()
+    {
+        CommandPrefix = "!getGM";
+        Help = ": returns the current gamemode";
+    }
+
+    public override Command ChatCommand(MyPlayer player, ChatChannel channel, string msg)
+    {
+        var c = new Command
+        {
+            StreamerId = player.SteamID,
+            Action = ActionType.GetGameMode,
+            ExecutorName = player.Name
         };
         return c;
     }

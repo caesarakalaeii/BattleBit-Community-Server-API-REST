@@ -56,6 +56,7 @@ public class MyGameServer : GameServer<MyPlayer>
         new DeopCommand(),
         new NextGameModeCommand(),
         new SetGameModeCommand(),
+        new GetGameModeCommand(),
         new TogglePlaylistCommand()
     };
 
@@ -350,14 +351,14 @@ public class MyGameServer : GameServer<MyPlayer>
                     SaveStreamers();
                     break;
                 }
-                case ActionType.GrantOP:
+                case ActionType.GrantOp:
                 {
                     player.Message("You are now an admin", 2f);
                     mAdmins.Add(player.SteamID);
                     SaveAdmins();
                     break;
                 }
-                case ActionType.RevokeOP:
+                case ActionType.RevokeOp:
                 {
                     player.Message("You are no longer an Admin", 2f);
                     mAdmins.Remove(player.SteamID);
@@ -386,6 +387,11 @@ public class MyGameServer : GameServer<MyPlayer>
 
                     AnnounceShort($"GameMode is now {mCurrentGameMode.Name}");
                     mCurrentGameMode.Reset();
+                    break;
+                }
+                case ActionType.GetGameMode:
+                {
+                    AnnounceShort($"GameMode is {mCurrentGameMode.Name}");
                     break;
                 }
                 case ActionType.TogglePlaylist:
