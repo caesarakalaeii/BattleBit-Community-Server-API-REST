@@ -63,8 +63,11 @@ public class KillCommand : ApiCommand
 
 public class GrenadeCommand : ApiCommand
 {
-    public string CommandPrefix = "!grenade";
-    public string Help = "'steamid': spawns live grenade on specific player";
+    public GrenadeCommand()
+    {
+        CommandPrefix = "!grenade";
+        Help = "'steamid': spawns live grenade on specific player";
+    }
 
     public override Command ChatCommand(MyPlayer player, ChatChannel channel, string msg)
     {
@@ -96,7 +99,7 @@ public class TeleportCommand : ApiCommand
         {
             X = Convert.ToSingle(vectorStr[0]),
             Y = Convert.ToSingle(vectorStr[1]),
-            Z = Convert.ToSingle(vectorStr[2]) // Fix the index here to [2]
+            Z = Convert.ToSingle(vectorStr[2]) 
         };
 
         var c = new Command
