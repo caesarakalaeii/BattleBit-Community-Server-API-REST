@@ -7,8 +7,15 @@ internal abstract class MyProgram
     private static void Main(string[] args)
     {
         Console.WriteLine("Starting API");
-        var listener = new ServerListener<MyPlayer, MyGameServer>();
-        listener.Start(55669);
+        try
+        {
+            var listener = new ServerListener<MyPlayer, MyGameServer>();
+            listener.Start(55669);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"ERROR: {ex}");
+        }
 
         Thread.Sleep(-1);
     }

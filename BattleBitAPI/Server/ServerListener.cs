@@ -595,18 +595,18 @@ public class ServerListener<TPlayer, TGameServer> : IDisposable where TPlayer : 
                         playerInternal.CurrentLoadout = loadout;
                         playerInternal.CurrentWearings = wearings;
 
-                        ////Modifications
-                        //{
-                        //    readStream.Reset();
-                        //    if (!await networkStream.TryRead(readStream, 4, source.Token))
-                        //        throw new Exception("Unable to read the Modifications Size");
-                        //    var modificationSize = (int)readStream.ReadUInt32();
-//
-                        //    readStream.Reset();
-                        //    if (!await networkStream.TryRead(readStream, modificationSize, source.Token))
-                        //        throw new Exception("Unable to read the Modifications");
-                        //    playerInternal._Modifications.Read(readStream);
-                        //}
+                        //Modifications
+                        {
+                            readStream.Reset();
+                            if (!await networkStream.TryRead(readStream, 4, source.Token))
+                                throw new Exception("Unable to read the Modifications Size");
+                            var modificationSize = (int)readStream.ReadUInt32();
+
+                            readStream.Reset();
+                            if (!await networkStream.TryRead(readStream, modificationSize, source.Token))
+                                throw new Exception("Unable to read the Modifications");
+                            playerInternal._Modifications.Read(readStream);
+                        }
 
                         //Call new instance callback if needed.
                         if (isNewClient)
