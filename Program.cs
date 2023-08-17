@@ -72,7 +72,8 @@ public class MyGameServer : GameServer<MyPlayer>
             new MeleeOnly(this),
             new CSGO(this)
         };
-        mCurrentGameMode = mGameModes[0];
+        mGameModeIndex = 0;
+        mCurrentGameMode = mGameModes[mGameModeIndex];
     }
 
     //public CommandQueue queue = new();
