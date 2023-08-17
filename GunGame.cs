@@ -42,9 +42,10 @@ public class GunGame : GameMode
 
     public override Task OnPlayerSpawned(MyPlayer player)
     {
-        player.SetRunningSpeedMultiplier(1.25f);
-        player.SetFallDamageMultiplier(0f);
-        player.SetJumpMultiplier(1.5f);
+        player.Modifications.RespawnTime = 0f;
+        player.Modifications.RunningSpeedMultiplier = 1.25f;
+        player.Modifications.FallDamageMultiplier = 0f;
+        player.Modifications.JumpHeightMultiplier = 1.5f;
         return base.OnPlayerSpawned(player);
     }
 

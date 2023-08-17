@@ -9,12 +9,11 @@ public class Hardcore : GameMode
 
     public override Task OnPlayerSpawned(MyPlayer player)
     {
-        ServerSettings.HitMarkersEnabled = false;
-        player.SetRunningSpeedMultiplier(1.25f);
-        player.SetFallDamageMultiplier(2f);
+        player.Modifications.HitMarkersEnabled = false;
+        player.Modifications.RunningSpeedMultiplier = 1.25f;
+        player.Modifications.FallDamageMultiplier = 2f;
+        player.Modifications.GiveDamageMultiplier = 2f;
         player.SetHP(50);
-        player.SetGiveDamageMultiplier(2f);
-
         return base.OnPlayerSpawned(player);
     }
 }

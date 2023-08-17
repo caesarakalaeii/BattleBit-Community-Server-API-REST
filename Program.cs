@@ -294,7 +294,7 @@ public class MyGameServer : GameServer<MyPlayer>
                 }
                 case ActionType.Speed:
                 {
-                    player.SetRunningSpeedMultiplier(c.Amount);
+                    player.Modifications.RunningSpeedMultiplier = c.Amount;
                     player.Message($"{c.ExecutorName} has set your speed to {c.Amount}x", 2f);
                     break;
                 }
@@ -322,13 +322,13 @@ public class MyGameServer : GameServer<MyPlayer>
                 }
                 case ActionType.ChangeDamage:
                 {
-                    player.SetGiveDamageMultiplier(c.Amount);
+                    player.Modifications.GiveDamageMultiplier = c.Amount;
                     player.Message($"{c.ExecutorName} has set your Dmg Multiplier to {c.Amount}", 2f);
                     break;
                 }
                 case ActionType.ChangeReceivedDamage:
                 {
-                    player.SetReceiveDamageMultiplier(c.Amount);
+                    player.Modifications.ReceiveDamageMultiplier = c.Amount;
                     player.Message($"{c.ExecutorName} has set your recieve Dmg Multiplier to {c.Amount}", 2f);
                     break;
                 }

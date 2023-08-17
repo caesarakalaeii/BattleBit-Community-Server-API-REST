@@ -124,18 +124,13 @@ public class TeamGunGame : GameMode
 
     public override Task OnPlayerSpawned(MyPlayer player)
     {
-        player.SetRunningSpeedMultiplier(1.25f);
-        player.SetFallDamageMultiplier(0f);
-        player.SetJumpMultiplier(1.5f);
+        player.Modifications.RunningSpeedMultiplier = 1.25f;
+        player.Modifications.FallDamageMultiplier = 0f;
+        player.Modifications.JumpHeightMultiplier = 1.5f;
+        player.Modifications.DisableBleeding();
         return base.OnPlayerSpawned(player);
     }
-
-    public override Task OnRoundStarted()
-    {
-        ServerSettings.BleedingEnabled = false;
-        return base.OnRoundStarted();
-    }
-
+    
     public override Task OnAPlayerDownedAnotherPlayer(OnPlayerKillArguments<MyPlayer> args)
     {
         args.Victim.Kill();

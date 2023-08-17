@@ -1,29 +1,25 @@
 ﻿using BattleBitAPI.Common;
-using BattleBitAPI.Server;
 
 namespace CommunityServerAPI;
 
 public class MeleeOnly : GameMode
 {
-
     public MeleeOnly()
     {
         Name = "MeleeOnly";
     }
+
     public override Task<OnPlayerSpawnArguments> OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
     {
         player.SetLightGadget("Pickaxe", 0, true);
-        player.SetRunningSpeedMultiplier(1.25f);
-        player.SetFallDamageMultiplier(0f);
-        player.SetJumpMultiplier(1.5f);
+        player.Modifications.RunningSpeedMultiplier = 1.25f;
+        player.Modifications.FallDamageMultiplier = 0f;
+        player.Modifications.JumpHeightMultiplier = 1.5f;
         return base.OnPlayerSpawning(player, request);
     }
 
     public override void Reset()
     {
-        foreach (var player in AllPlayers)
-        {
-            player.Kill();
-        }
+        foreach (var player in AllPlayers) player.Kill();
     }
 }

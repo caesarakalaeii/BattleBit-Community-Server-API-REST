@@ -11,9 +11,9 @@ public class Swap : GameMode
 
     public override Task<OnPlayerSpawnArguments> OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
     {
-        player.SetRunningSpeedMultiplier(1.25f);
-        player.SetFallDamageMultiplier(0f);
-        player.SetJumpMultiplier(1.5f);
+        player.Modifications.RunningSpeedMultiplier = 1.25f;
+        player.Modifications.FallDamageMultiplier = 0f;
+        player.Modifications.JumpHeightMultiplier = 1.5f;
         return base.OnPlayerSpawning(player, request);
     }
 
@@ -26,11 +26,9 @@ public class Swap : GameMode
             onPlayerKillArguments.Victim.Kill();
         });
     }
+
     public override void Reset()
     {
-        foreach (var player in AllPlayers)
-        {
-            player.Kill();
-        }
+        foreach (var player in AllPlayers) player.Kill();
     }
 }
