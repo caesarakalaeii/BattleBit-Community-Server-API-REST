@@ -2,7 +2,7 @@
 
 public class Hardcore : GameMode
 {
-    public Hardcore()
+    public Hardcore(MyGameServer r) : base(r)
     {
         Name = "Hardcore";
     }

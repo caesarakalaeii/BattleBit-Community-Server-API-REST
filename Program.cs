@@ -20,6 +20,12 @@ internal class MyProgram
 public class GameMode : GameServer<MyPlayer>
 {
     public string Name = string.Empty;
+    protected MyGameServer R;
+
+    protected GameMode(MyGameServer r)
+    {
+        R = r;
+    }
 
     public virtual void Reset()
     {
@@ -66,23 +72,29 @@ public class MyGameServer : GameServer<MyPlayer>
         new TogglePlaylistCommand()
     };
 
-    private readonly List<GameMode> mGameModes = new()
-    {
-        new GunGame(),
-        new TeamGunGame(),
-        new LifeSteal(),
-        new Swap(),
-        new Hardcore(),
-        new MeleeOnly()
-    };
-
-    //public CommandQueue queue = new();
+    private readonly List<GameMode> mGameModes;
     private readonly List<ulong> mListedStreamers = new();
 
-    private GameMode mCurrentGameMode = new GunGame();
+    private GameMode mCurrentGameMode;
 
     private bool mCyclePlaylist;
     private int mGameModeIndex;
+
+    public MyGameServer()
+    {
+        mGameModes = new List<GameMode>
+        {
+            new GunGame(this),
+            new TeamGunGame(this),
+            new LifeSteal(this),
+            new Swap(this),
+            new Hardcore(this),
+            new MeleeOnly(this)
+        };
+        mCurrentGameMode = mGameModes[0];
+    }
+
+    //public CommandQueue queue = new();
 
 
     //modular GameModes: CHECK if new Gamemodes need more passthrough
