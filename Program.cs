@@ -27,6 +27,10 @@ public class GameMode : GameServer<MyPlayer>
         R = r;
     }
 
+    public virtual void Init()
+    {
+    }
+
     public virtual void Reset()
     {
         foreach (var player in R.AllPlayers) player.Kill();
@@ -90,7 +94,8 @@ public class MyGameServer : GameServer<MyPlayer>
             new LifeSteal(this),
             new Swap(this),
             new Hardcore(this),
-            new MeleeOnly(this)
+            new MeleeOnly(this),
+            new CSGO(this)
         };
         mCurrentGameMode = mGameModes[0];
     }
@@ -386,15 +391,17 @@ public class MyGameServer : GameServer<MyPlayer>
                 }
                 case ActionType.NextGameMode:
                 {
+                    mCurrentGameMode.Reset();
                     mGameModeIndex = (mGameModeIndex + 1) % mGameModes.Count;
                     mCurrentGameMode = mGameModes[mGameModeIndex];
-                    mCurrentGameMode.Reset();
+                    mCurrentGameMode.Init();
                     AnnounceShort($"GameMode is now {mCurrentGameMode.Name}");
                     Console.WriteLine($"GameMode is now {mCurrentGameMode.Name}");
                     break;
                 }
                 case ActionType.SetGameMode:
                 {
+                    mCurrentGameMode.Reset();
                     foreach (var gameMode in mGameModes)
                         if (gameMode.Name == c.ExecutorName)
                         {
@@ -402,7 +409,7 @@ public class MyGameServer : GameServer<MyPlayer>
                             mGameModeIndex = mGameModes.IndexOf(gameMode);
                         }
 
-                    mCurrentGameMode.Reset();
+                    mCurrentGameMode.Init();
                     AnnounceShort($"GameMode is now {mCurrentGameMode.Name}");
                     break;
                 }
