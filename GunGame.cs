@@ -28,7 +28,7 @@ public class GunGame : GameMode
         Weapons.SSG69
     };
 
-    public GunGame(MyGameServer r) : base(r)
+    public GunGame()
     {
         Name = "GunGame";
     }
@@ -92,7 +92,7 @@ public class GunGame : GameMode
     public override void Reset()
     {
         SayToChat("Resetting GameMode");
-        foreach (var player in R.AllPlayers)
+        foreach (var player in AllPlayers)
         {
             player.Level = 0;
             player.Kill();

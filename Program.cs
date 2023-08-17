@@ -66,13 +66,13 @@ public class MyGameServer : GameServer<MyPlayer>
     {
         mGameModes = new List<GameMode>
         {
-            new GunGame(this),
-            new TeamGunGame(this),
-            new LifeSteal(this),
-            new Swap(this),
-            new Hardcore(this),
-            new MeleeOnly(this),
-            new Csgo(this)
+            new GunGame(),
+            new TeamGunGame(),
+            new LifeSteal(),
+            new Swap(),
+            new Hardcore(),
+            new MeleeOnly(),
+            new Csgo()
         };
         mGameModeIndex = 0;
         mCurrentGameMode = mGameModes[mGameModeIndex];

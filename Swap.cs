@@ -4,7 +4,7 @@ namespace CommunityServerAPI;
 
 public class Swap : GameMode
 {
-    public Swap(MyGameServer r) : base(r)
+    public Swap()
     {
         Name = "Swappers";
     }

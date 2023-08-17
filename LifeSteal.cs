@@ -4,7 +4,7 @@ namespace CommunityServerAPI;
 
 public class LifeSteal : GameMode
 {
-    public LifeSteal(MyGameServer r) : base(r)
+    public LifeSteal()
     {
         Name = "LifeSteal";
     }
@@ -25,6 +25,4 @@ public class LifeSteal : GameMode
         player.Modifications.DisableBleeding();
         return base.OnPlayerSpawned(player);
     }
-
-
 }

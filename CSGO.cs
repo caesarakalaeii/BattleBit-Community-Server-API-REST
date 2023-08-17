@@ -4,7 +4,7 @@ namespace CommunityServerAPI;
 
 public class Csgo : GameMode
 {
-    public Csgo(MyGameServer r) : base(r)
+    public Csgo()
     {
         Name = "CSGO";
     }
@@ -42,8 +42,8 @@ public class Csgo : GameMode
 
     public override void Reset()
     {
-        R.ServerSettings.PlayerCollision = false;
-        R.ServerSettings.FriendlyFireEnabled = false;
+        ServerSettings.PlayerCollision = false;
+        ServerSettings.FriendlyFireEnabled = false;
         base.Reset();
     }
 }

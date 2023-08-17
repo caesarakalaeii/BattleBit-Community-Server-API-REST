@@ -100,7 +100,7 @@ public class TeamGunGame : GameMode
         }
     };
 
-    public TeamGunGame(MyGameServer r) : base(r)
+    public TeamGunGame()
     {
         Name = "TeamGunGame";
         LevelA = 0;

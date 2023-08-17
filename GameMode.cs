@@ -5,11 +5,10 @@ using BattleBitAPI.Server;
 public class GameMode : GameServer<MyPlayer>
 {
     public string Name = string.Empty;
-    protected MyGameServer R;
 
-    protected GameMode(MyGameServer r)
+    protected GameMode()
     {
-        R = r;
+        
     }
 
     public virtual void Init()
@@ -18,7 +17,7 @@ public class GameMode : GameServer<MyPlayer>
 
     public virtual void Reset()
     {
-        foreach (var player in R.AllPlayers) player.Kill();
+        foreach (var player in AllPlayers) player.Kill();
     }
 
     public override Task OnRoundEnded()

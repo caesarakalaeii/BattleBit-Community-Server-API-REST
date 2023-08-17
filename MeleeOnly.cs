@@ -4,7 +4,7 @@ namespace CommunityServerAPI;
 
 public class MeleeOnly : GameMode
 {
-    public MeleeOnly(MyGameServer r) : base(r)
+    public MeleeOnly()
     {
         Name = "MeleeOnly";
     }
@@ -17,5 +17,4 @@ public class MeleeOnly : GameMode
         player.Modifications.JumpHeightMultiplier = 1.5f;
         return base.OnPlayerSpawning(player, request);
     }
-
 }
