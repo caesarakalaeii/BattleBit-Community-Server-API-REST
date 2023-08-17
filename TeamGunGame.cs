@@ -167,6 +167,6 @@ public class TeamGunGame : GameMode
         LevelA = 0;
         LevelB = 0;
 
-        foreach (var player in AllPlayers) player.Kill();
+        base.Reset();
     }
 }

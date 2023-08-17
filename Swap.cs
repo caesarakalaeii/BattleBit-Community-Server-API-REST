@@ -27,8 +27,5 @@ public class Swap : GameMode
         });
     }
 
-    public override void Reset()
-    {
-        foreach (var player in AllPlayers) player.Kill();
-    }
+
 }

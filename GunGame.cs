@@ -92,7 +92,7 @@ public class GunGame : GameMode
     public override void Reset()
     {
         SayToChat("Resetting GameMode");
-        foreach (var player in AllPlayers)
+        foreach (var player in R.AllPlayers)
         {
             player.Level = 0;
             player.Kill();

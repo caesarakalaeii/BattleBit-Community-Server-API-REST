@@ -18,8 +18,4 @@ public class MeleeOnly : GameMode
         return base.OnPlayerSpawning(player, request);
     }
 
-    public override void Reset()
-    {
-        foreach (var player in AllPlayers) player.Kill();
-    }
 }

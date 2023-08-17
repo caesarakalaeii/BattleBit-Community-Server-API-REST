@@ -29,6 +29,7 @@ public class GameMode : GameServer<MyPlayer>
 
     public virtual void Reset()
     {
+        foreach (var player in R.AllPlayers) player.Kill();
     }
 
     public override Task OnRoundEnded()
@@ -387,6 +388,7 @@ public class MyGameServer : GameServer<MyPlayer>
                 {
                     mGameModeIndex = (mGameModeIndex + 1) % mGameModes.Count;
                     mCurrentGameMode = mGameModes[mGameModeIndex];
+                    mCurrentGameMode.Reset();
                     AnnounceShort($"GameMode is now {mCurrentGameMode.Name}");
                     Console.WriteLine($"GameMode is now {mCurrentGameMode.Name}");
                     break;
@@ -400,6 +402,7 @@ public class MyGameServer : GameServer<MyPlayer>
                             mGameModeIndex = mGameModes.IndexOf(gameMode);
                         }
 
+                    mCurrentGameMode.Reset();
                     AnnounceShort($"GameMode is now {mCurrentGameMode.Name}");
                     break;
                 }
