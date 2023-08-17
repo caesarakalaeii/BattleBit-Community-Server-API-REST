@@ -1,6 +1,4 @@
-﻿using BattleBitAPI.Server;
-
-namespace CommunityServerAPI.GameModes;
+﻿namespace CommunityServerAPI.GameModes;
 
 public class Hardcore : GameMode
 {

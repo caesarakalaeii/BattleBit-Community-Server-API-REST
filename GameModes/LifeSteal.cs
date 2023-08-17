@@ -1,7 +1,4 @@
-﻿using BattleBitAPI.Common;
-using BattleBitAPI.Server;
-
-namespace CommunityServerAPI.GameModes;
+﻿namespace CommunityServerAPI.GameModes;
 
 public class LifeSteal : GameMode
 {

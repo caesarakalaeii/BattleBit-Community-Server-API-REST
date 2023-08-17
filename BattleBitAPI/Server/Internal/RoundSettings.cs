@@ -1,113 +1,115 @@
-﻿using BattleBitAPI.Common;
+﻿using Stream = BattleBitAPI.Common.Serialization.Stream;
 
-namespace BattleBitAPI.Server
+namespace BattleBitAPI.Server;
+
+public class RoundSettings<TPlayer> where TPlayer : Player<TPlayer>
 {
-    public class RoundSettings<TPlayer> where TPlayer : Player<TPlayer>
+    // ---- Construction ---- 
+    private readonly GameServer<TPlayer>.Internal mResources;
+
+    public RoundSettings(GameServer<TPlayer>.Internal resources)
     {
-        // ---- Construction ---- 
-        private GameServer<TPlayer>.Internal mResources;
-        public RoundSettings(GameServer<TPlayer>.Internal resources)
+        mResources = resources;
+    }
+
+    // ---- Variables ---- 
+    public GameState State => mResources._RoundSettings.State;
+
+    public double TeamATickets
+    {
+        get => mResources._RoundSettings.TeamATickets;
+        set
         {
-            mResources = resources;
+            mResources._RoundSettings.TeamATickets = value;
+            mResources.IsDirtyRoundSettings = true;
+        }
+    }
+
+    public double TeamBTickets
+    {
+        get => mResources._RoundSettings.TeamBTickets;
+        set
+        {
+            mResources._RoundSettings.TeamBTickets = value;
+            mResources.IsDirtyRoundSettings = true;
+        }
+    }
+
+    public double MaxTickets
+    {
+        get => mResources._RoundSettings.MaxTickets;
+        set
+        {
+            mResources._RoundSettings.MaxTickets = value;
+            mResources.IsDirtyRoundSettings = true;
+        }
+    }
+
+    public int PlayersToStart
+    {
+        get => mResources._RoundSettings.PlayersToStart;
+        set
+        {
+            mResources._RoundSettings.PlayersToStart = value;
+            mResources.IsDirtyRoundSettings = true;
+        }
+    }
+
+    public int SecondsLeft
+    {
+        get => mResources._RoundSettings.SecondsLeft;
+        set
+        {
+            mResources._RoundSettings.SecondsLeft = value;
+            mResources.IsDirtyRoundSettings = true;
+        }
+    }
+
+    // ---- Reset ---- 
+    public void Reset()
+    {
+    }
+
+    // ---- Classes ---- 
+    public class mRoundSettings
+    {
+        public const int Size = 1 + 8 + 8 + 8 + 4 + 4;
+        public double MaxTickets = 1;
+        public int PlayersToStart = 16;
+        public int SecondsLeft = 60;
+
+        public GameState State = GameState.WaitingForPlayers;
+        public double TeamATickets;
+        public double TeamBTickets;
+
+        public void Write(Stream ser)
+        {
+            ser.Write((byte)State);
+            ser.Write(TeamATickets);
+            ser.Write(TeamBTickets);
+            ser.Write(MaxTickets);
+            ser.Write(PlayersToStart);
+            ser.Write(SecondsLeft);
         }
 
-        // ---- Variables ---- 
-        public GameState State
+        public void Read(Stream ser)
         {
-            get => this.mResources._RoundSettings.State;
-        }
-        public double TeamATickets
-        {
-            get => this.mResources._RoundSettings.TeamATickets;
-            set
-            {
-                this.mResources._RoundSettings.TeamATickets = value;
-                this.mResources.IsDirtyRoundSettings = true;
-            }
-        }
-        public double TeamBTickets
-        {
-            get => this.mResources._RoundSettings.TeamBTickets;
-            set
-            {
-                this.mResources._RoundSettings.TeamBTickets = value;
-                this.mResources.IsDirtyRoundSettings = true;
-            }
-        }
-        public double MaxTickets
-        {
-            get => this.mResources._RoundSettings.MaxTickets;
-            set
-            {
-                this.mResources._RoundSettings.MaxTickets = value;
-                this.mResources.IsDirtyRoundSettings = true;
-            }
-        }
-        public int PlayersToStart
-        {
-            get => this.mResources._RoundSettings.PlayersToStart;
-            set
-            {
-                this.mResources._RoundSettings.PlayersToStart = value;
-                this.mResources.IsDirtyRoundSettings = true;
-            }
-        }
-        public int SecondsLeft
-        {
-            get => this.mResources._RoundSettings.SecondsLeft;
-            set
-            {
-                this.mResources._RoundSettings.SecondsLeft = value;
-                this.mResources.IsDirtyRoundSettings = true;
-            }
+            State = (GameState)ser.ReadInt8();
+            TeamATickets = ser.ReadDouble();
+            TeamBTickets = ser.ReadDouble();
+            MaxTickets = ser.ReadDouble();
+            PlayersToStart = ser.ReadInt32();
+            SecondsLeft = ser.ReadInt32();
         }
 
-        // ---- Reset ---- 
         public void Reset()
         {
-
-        }
-
-        // ---- Classes ---- 
-        public class mRoundSettings
-        {
-            public const int Size = 1 + 8 + 8 + 8 + 4 + 4;
-
-            public GameState State = GameState.WaitingForPlayers;
-            public double TeamATickets = 0;
-            public double TeamBTickets = 0;
-            public double MaxTickets = 1;
-            public int PlayersToStart = 16;
-            public int SecondsLeft = 60;
-
-            public void Write(Common.Serialization.Stream ser)
-            {
-                ser.Write((byte)this.State);
-                ser.Write(this.TeamATickets);
-                ser.Write(this.TeamBTickets);
-                ser.Write(this.MaxTickets);
-                ser.Write(this.PlayersToStart);
-                ser.Write(this.SecondsLeft);
-            }
-            public void Read(Common.Serialization.Stream ser)
-            {
-                this.State = (GameState)ser.ReadInt8();
-                this.TeamATickets = ser.ReadDouble();
-                this.TeamBTickets = ser.ReadDouble();
-                this.MaxTickets = ser.ReadDouble();
-                this.PlayersToStart = ser.ReadInt32();
-                this.SecondsLeft = ser.ReadInt32();
-            }
-
-            public void Reset()
-            {
-                this.State = GameState.WaitingForPlayers;
-                this.TeamATickets = 0;
-                this.TeamBTickets = 0;
-                this.MaxTickets = 1;
-                this.PlayersToStart = 16;
-                this.SecondsLeft = 60;
-            }
+            State = GameState.WaitingForPlayers;
+            TeamATickets = 0;
+            TeamBTickets = 0;
+            MaxTickets = 1;
+            PlayersToStart = 16;
+            SecondsLeft = 60;
         }
     }
 }

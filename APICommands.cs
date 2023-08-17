@@ -1,10 +1,8 @@
 ﻿using System.Numerics;
-using BattleBitAPI.Common;
-using CommunityServerAPI;
 
-namespace BattleBitAPI.Server;
+namespace CommunityServerAPI;
 
-public abstract class APICommand
+public abstract class ApiCommand
 {
     public string CommandPrefix;
     public string Help;
@@ -15,7 +13,7 @@ public abstract class APICommand
     }
 }
 
-public class HealCommand : APICommand
+public class HealCommand : ApiCommand
 {
     public HealCommand()
     {
@@ -40,7 +38,7 @@ public class HealCommand : APICommand
     }
 }
 
-public class KillCommand : APICommand
+public class KillCommand : ApiCommand
 {
     public KillCommand()
     {
@@ -63,7 +61,7 @@ public class KillCommand : APICommand
     }
 }
 
-public class GrenadeCommand : APICommand
+public class GrenadeCommand : ApiCommand
 {
     public string CommandPrefix = "!grenade";
     public string Help = "'steamid': spawns live grenade on specific player";
@@ -82,7 +80,7 @@ public class GrenadeCommand : APICommand
     }
 }
 
-public class TeleportCommand : APICommand
+public class TeleportCommand : ApiCommand
 {
     public TeleportCommand()
     {
@@ -113,7 +111,7 @@ public class TeleportCommand : APICommand
     }
 }
 
-public class SpeedCommand : APICommand
+public class SpeedCommand : ApiCommand
 {
     public SpeedCommand()
     {
@@ -135,7 +133,7 @@ public class SpeedCommand : APICommand
     }
 }
 
-public class ChangeAttachmentCommand : APICommand
+public class ChangeAttachmentCommand : ApiCommand
 {
     public ChangeAttachmentCommand()
     {
@@ -158,7 +156,7 @@ public class ChangeAttachmentCommand : APICommand
     }
 }
 
-public class ChangeWeaponCommand : APICommand
+public class ChangeWeaponCommand : ApiCommand
 {
     public ChangeWeaponCommand()
     {
@@ -181,7 +179,7 @@ public class ChangeWeaponCommand : APICommand
     }
 }
 
-public class ForceStartCommand : APICommand
+public class ForceStartCommand : ApiCommand
 {
     public ForceStartCommand()
     {
@@ -201,7 +199,7 @@ public class ForceStartCommand : APICommand
     }
 }
 
-public class HelpCommand : APICommand
+public class HelpCommand : ApiCommand
 {
     public HelpCommand()
     {
@@ -221,7 +219,7 @@ public class HelpCommand : APICommand
     }
 }
 
-public class RevealCommand : APICommand
+public class RevealCommand : ApiCommand
 {
     public RevealCommand()
     {
@@ -242,7 +240,7 @@ public class RevealCommand : APICommand
     }
 }
 
-public class ChangeDamageCommand : APICommand
+public class ChangeDamageCommand : ApiCommand
 {
     public ChangeDamageCommand()
     {
@@ -264,7 +262,7 @@ public class ChangeDamageCommand : APICommand
     }
 }
 
-public class ChangeReceivedDamageCommand : APICommand
+public class ChangeReceivedDamageCommand : ApiCommand
 {
     public ChangeReceivedDamageCommand()
     {
@@ -286,7 +284,7 @@ public class ChangeReceivedDamageCommand : APICommand
     }
 }
 
-public class ChangeAmmoCommand : APICommand
+public class ChangeAmmoCommand : ApiCommand
 {
     public ChangeAmmoCommand()
     {
@@ -308,7 +306,7 @@ public class ChangeAmmoCommand : APICommand
     }
 }
 
-public class SetStreamerCommand : APICommand
+public class SetStreamerCommand : ApiCommand
 {
     public SetStreamerCommand()
     {
@@ -329,7 +327,7 @@ public class SetStreamerCommand : APICommand
     }
 }
 
-public class RemoveStreamerCommand : APICommand
+public class RemoveStreamerCommand : ApiCommand
 {
     public RemoveStreamerCommand()
     {
@@ -350,7 +348,7 @@ public class RemoveStreamerCommand : APICommand
     }
 }
 
-public class OpCommand : APICommand
+public class OpCommand : ApiCommand
 {
     public OpCommand()
     {
@@ -371,7 +369,7 @@ public class OpCommand : APICommand
     }
 }
 
-public class DeopCommand : APICommand
+public class DeopCommand : ApiCommand
 {
     public DeopCommand()
     {
@@ -392,7 +390,7 @@ public class DeopCommand : APICommand
     }
 }
 
-public class NextGameModeCommand : APICommand
+public class NextGameModeCommand : ApiCommand
 {
     public NextGameModeCommand()
     {
@@ -412,7 +410,7 @@ public class NextGameModeCommand : APICommand
     }
 }
 
-public class SetGameModeCommand : APICommand
+public class SetGameModeCommand : ApiCommand
 {
     public SetGameModeCommand()
     {
@@ -433,7 +431,7 @@ public class SetGameModeCommand : APICommand
     }
 }
 
-public class TogglePlaylistCommand : APICommand
+public class TogglePlaylistCommand : ApiCommand
 {
     public TogglePlaylistCommand()
     {
@@ -454,7 +452,7 @@ public class TogglePlaylistCommand : APICommand
     }
 }
 
-public class GetGameModeCommand : APICommand
+public class GetGameModeCommand : ApiCommand
 {
     public GetGameModeCommand()
     {

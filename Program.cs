@@ -1,8 +1,4 @@
 ﻿using System.Text.Json;
-using BattleBitAPI;
-using BattleBitAPI.Common;
-using BattleBitAPI.Server;
-using CommunityServerAPI.GameModes;
 
 namespace CommunityServerAPI;
 
@@ -51,7 +47,7 @@ public abstract class MyGameServer : GameServer<MyPlayer>
     private const string SteamIdJson = "./config/streamer_steamids.json";
     private readonly List<ulong> mAdmins = new();
 
-    private readonly List<APICommand> mChatCommands = new()
+    private readonly List<ApiCommand> mChatCommands = new()
     {
         new HealCommand(),
         new KillCommand(),

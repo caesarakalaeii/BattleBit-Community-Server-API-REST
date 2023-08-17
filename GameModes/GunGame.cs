@@ -1,6 +1,3 @@
-using BattleBitAPI.Common;
-using BattleBitAPI.Server;
-
 namespace CommunityServerAPI.GameModes;
 
 public class GunGame : GameMode
