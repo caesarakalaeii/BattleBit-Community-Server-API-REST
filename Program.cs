@@ -401,7 +401,15 @@ public class MyGameServer : GameServer<MyPlayer>
                 }
                 case ActionType.SetGameMode:
                 {
-                    mCurrentGameMode.Reset();
+                    try
+                    {
+                        mCurrentGameMode.Reset();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"ERROR resetting GM: {ex}");
+                    }
+
                     foreach (var gameMode in mGameModes)
                         if (gameMode.Name == c.ExecutorName)
                         {
@@ -409,7 +417,15 @@ public class MyGameServer : GameServer<MyPlayer>
                             mGameModeIndex = mGameModes.IndexOf(gameMode);
                         }
 
-                    mCurrentGameMode.Init();
+                    try
+                    {
+                        mCurrentGameMode.Init();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"ERROR initializing GM: {ex}");
+                    }
+
                     AnnounceShort($"GameMode is now {mCurrentGameMode.Name}");
                     break;
                 }
