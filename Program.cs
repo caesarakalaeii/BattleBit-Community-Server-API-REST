@@ -62,12 +62,12 @@ public class MyGameServer : GameServer<MyPlayer>
 
     private readonly List<GameMode> mGameModes = new()
     {
+        new GunGame(),
         new TeamGunGame(),
         new LifeSteal(),
         new Swap(),
         new Hardcore(),
-        new MeleeOnly(),
-        new GunGame()
+        new MeleeOnly()
     };
 
     //public CommandQueue queue = new();
