@@ -62,7 +62,23 @@ public class MyGameServer : GameServer<MyPlayer>
     private List<GameMode> mGameModes;
 
     //public CommandQueue queue = new();
-
+    public void Init()
+    {
+        mGameModes = new List<GameMode>
+        {
+            new GunGame(this),
+            new TeamGunGame(this),
+            new LifeSteal(this),
+            new Swap(this),
+            new Hardcore(this),
+            new MeleeOnly(this),
+            new CSGO(this)
+        };
+        mGameModeIndex = 0;
+        mCurrentGameMode = mGameModes[mGameModeIndex];
+        FetchStreamers();
+        FetchAdmins();
+    }
 
     //modular GameModes: CHECK if new Gamemodes need more passthrough
 
@@ -186,6 +202,7 @@ public class MyGameServer : GameServer<MyPlayer>
 
     public override Task OnReconnected()
     {
+        Init();
         Console.Out.WriteLine($"Current GameMode: {mCurrentGameMode.Name}");
         return base.OnReconnected();
     }
@@ -232,21 +249,8 @@ public class MyGameServer : GameServer<MyPlayer>
 
     public override async Task OnConnected()
     {
-        mGameModes = new List<GameMode>
-        {
-            new GunGame(this),
-            new TeamGunGame(this),
-            new LifeSteal(this),
-            new Swap(this),
-            new Hardcore(this),
-            new MeleeOnly(this),
-            new CSGO(this)
-        };
-        mGameModeIndex = 0;
-        mCurrentGameMode = mGameModes[mGameModeIndex];
         await Console.Out.WriteLineAsync(GameIP + " Connected");
-        FetchStreamers();
-        FetchAdmins();
+        Init();
     }
 
 

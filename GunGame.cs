@@ -64,7 +64,7 @@ public class GunGame : GameMode
         };
 
 
-        player.SetPrimaryWeapon(w, 0, true); //currently buggy everything will crash
+        player.SetPrimaryWeapon(w, 10, true);
     }
 
     public override async Task OnAPlayerDownedAnotherPlayer(OnPlayerKillArguments<MyPlayer> onPlayerKillArguments)
