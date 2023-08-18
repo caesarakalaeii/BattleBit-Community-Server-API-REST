@@ -11,8 +11,20 @@ internal class MyProgram
     {
         Console.WriteLine("Starting API");
         var listener = new ServerListener<MyPlayer, MyGameServer>();
+        listener.OnCreatingGameServerInstance += OnCreatingGameServerInstance;
+        listener.OnCreatingPlayerInstance += OnCreatingPlayerInstance;
         listener.Start(55669);
         Thread.Sleep(-1);
+    }
+
+    private static MyPlayer OnCreatingPlayerInstance()
+    {
+        return new MyPlayer();
+    }
+
+    private static MyGameServer OnCreatingGameServerInstance()
+    {
+        return new MyGameServer();
     }
 }
 
@@ -51,14 +63,14 @@ public class MyGameServer : GameServer<MyPlayer>
         new TogglePlaylistCommand()
     };
 
+    private readonly List<GameMode> mGameModes;
+
     private readonly List<ulong> mListedStreamers = new();
 
     private GameMode mCurrentGameMode;
 
     private bool mCyclePlaylist;
     private int mGameModeIndex;
-
-    private readonly List<GameMode> mGameModes;
 
 
     //public CommandQueue queue = new();
