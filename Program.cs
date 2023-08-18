@@ -12,7 +12,6 @@ internal class MyProgram
         Console.WriteLine("Starting API");
         var listener = new ServerListener<MyPlayer, MyGameServer>();
         listener.Start(55669);
-
         Thread.Sleep(-1);
     }
 }
@@ -59,10 +58,11 @@ public class MyGameServer : GameServer<MyPlayer>
     private bool mCyclePlaylist;
     private int mGameModeIndex;
 
-    private List<GameMode> mGameModes;
+    private readonly List<GameMode> mGameModes;
+
 
     //public CommandQueue queue = new();
-    public void Init()
+    public MyGameServer()
     {
         mGameModes = new List<GameMode>
         {
@@ -79,6 +79,18 @@ public class MyGameServer : GameServer<MyPlayer>
         FetchStreamers();
         FetchAdmins();
     }
+
+    public override async Task OnConnected()
+    {
+        await Console.Out.WriteLineAsync(GameIP + " Connected");
+    }
+
+    public override Task OnReconnected()
+    {
+        Console.Out.WriteLine($"Current GameMode: {mCurrentGameMode.Name}");
+        return base.OnReconnected();
+    }
+
 
     //modular GameModes: CHECK if new Gamemodes need more passthrough
 
@@ -132,12 +144,12 @@ public class MyGameServer : GameServer<MyPlayer>
     }
 
 
-    public override Task OnPlayerJoiningToServer(ulong steamID, PlayerJoiningArguments args)
+    public override Task OnPlayerJoiningToServer(ulong steamId, PlayerJoiningArguments args)
     {
         args.Stats.Progress.Rank = 200;
         args.Stats.Progress.Prestige = 10;
 
-        return mCurrentGameMode.OnPlayerJoiningToServer(steamID, args);
+        return mCurrentGameMode.OnPlayerJoiningToServer(steamId, args);
     }
 
 
@@ -200,14 +212,6 @@ public class MyGameServer : GameServer<MyPlayer>
         }
     }
 
-    public override Task OnReconnected()
-    {
-        Init();
-        Console.Out.WriteLine($"Current GameMode: {mCurrentGameMode.Name}");
-        return base.OnReconnected();
-    }
-
-
     public void FetchStreamers()
     {
         Console.Out.WriteLine("Fetching configs");
@@ -245,12 +249,6 @@ public class MyGameServer : GameServer<MyPlayer>
         {
             Console.Out.WriteLine("Fetching admins failed: " + ex);
         }
-    }
-
-    public override async Task OnConnected()
-    {
-        await Console.Out.WriteLineAsync(GameIP + " Connected");
-        Init();
     }
 
 
