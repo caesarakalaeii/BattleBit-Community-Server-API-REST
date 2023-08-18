@@ -154,10 +154,19 @@ public class MyGameServer : GameServer<MyPlayer>
         return base.OnDisconnected();
     }
 
+    public override async Task OnPlayerConnected(MyPlayer player)
+    {
+        SayToChat("<color=green>" + player.Name + " joined the game!</color>");
+        player.Message($"Current GameMode is: {mCurrentGameMode.Name}", 4f);
+        await Console.Out.WriteLineAsync("Connected: " + player);
+
+        player.JoinSquad(Squads.Alpha);
+    }
 
     public override Task OnPlayerDisconnected(MyPlayer player)
     {
         Console.WriteLine($"{player.Name} disconnected");
+        SayToChat($"<color=red>{player.Name} left the game!</color>");
         player = mCurrentGameMode.OnPlayerDisconnected(player);
         return base.OnPlayerDisconnected(player);
     }
@@ -190,6 +199,7 @@ public class MyGameServer : GameServer<MyPlayer>
                 await HandleCommand(c);
                 return false;
             }
+
         var re = await mCurrentGameMode.OnPlayerTypedMessage(player, channel, msg);
         return await base.OnPlayerTypedMessage(re.Player, re.Channel, re.Msg);
     }
@@ -271,16 +281,6 @@ public class MyGameServer : GameServer<MyPlayer>
     }
 
 
-    public override async Task<bool> OnPlayerConnected(MyPlayer player)
-    {
-        await Console.Out.WriteLineAsync(player.Name + " Connected");
-        if (!mListedStreamers.Contains(player.SteamID)) return true;
-        player.Message($"Current GameMode is: {mCurrentGameMode.Name}", 4f);
-
-        return true;
-    }
-
-
     public async Task HandleCommand(Command c)
     {
         // need testing if blocking
@@ -333,7 +333,7 @@ public class MyGameServer : GameServer<MyPlayer>
                 }
                 case ActionType.Start:
                 {
-                    player.Message("Forcing start", 2f);
+                    player.Message("Forcing start ", 2f);
                     ForceStartGame();
                     break;
                 }
