@@ -169,3 +169,5 @@ tools/Cake.CoreCLR
 # .env file contains default environment variables for docker
 .env
 .git/
+
+log_*
