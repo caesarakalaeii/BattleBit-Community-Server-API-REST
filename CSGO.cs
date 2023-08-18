@@ -11,9 +11,9 @@ public class Csgo : GameMode
 
     public override void Init()
     {
-        ServerSettings.PlayerCollision = true;
-        ServerSettings.FriendlyFireEnabled = true;
-        if (Gamemode != "Rush")
+        R.ServerSettings.PlayerCollision = true;
+        R.ServerSettings.FriendlyFireEnabled = true;
+        if (R.Gamemode != "Rush")
         {
             // dunno
         }
