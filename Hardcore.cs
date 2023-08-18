@@ -7,7 +7,7 @@ public class Hardcore : GameMode
         Name = "Hardcore";
     }
 
-    public override Task OnPlayerSpawned(MyPlayer player)
+    public override MyPlayer OnPlayerSpawned(MyPlayer player)
     {
         player.Modifications.HitMarkersEnabled = false;
         player.Modifications.RunningSpeedMultiplier = 1.25f;

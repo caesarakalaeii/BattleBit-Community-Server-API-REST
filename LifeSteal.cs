@@ -9,7 +9,7 @@ public class LifeSteal : GameMode
         Name = "LifeSteal";
     }
 
-    public override Task OnAPlayerDownedAnotherPlayer(OnPlayerKillArguments<MyPlayer> args)
+    public override OnPlayerKillArguments<MyPlayer> OnAPlayerDownedAnotherPlayer(OnPlayerKillArguments<MyPlayer> args)
     {
         args.Killer.SetHP(100);
         args.Victim.Kill();
@@ -17,7 +17,7 @@ public class LifeSteal : GameMode
     }
 
 
-    public override Task OnPlayerSpawned(MyPlayer player)
+    public override MyPlayer OnPlayerSpawned(MyPlayer player)
     {
         player.Modifications.RunningSpeedMultiplier = 1.25f;
         player.Modifications.FallDamageMultiplier = 0f;

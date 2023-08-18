@@ -9,7 +9,7 @@ public class MeleeOnly : GameMode
         Name = "MeleeOnly";
     }
 
-    public override Task<OnPlayerSpawnArguments> OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
+    public override Returner OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
     {
         player.SetLightGadget("Pickaxe", 0, true);
         player.Modifications.RunningSpeedMultiplier = 1.25f;
