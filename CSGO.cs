@@ -20,17 +20,8 @@ public class Csgo : GameMode
     }
     //Buy system maybe
 
-    public override Task OnPlayerSpawned(MyPlayer player)
-    {
-        return base.OnPlayerSpawned(player);
-    }
 
-    public override Task<OnPlayerSpawnArguments> OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
-    {
-        return base.OnPlayerSpawning(player, request);
-    }
-
-    public override Task OnAPlayerDownedAnotherPlayer(OnPlayerKillArguments<MyPlayer> args)
+    public override OnPlayerKillArguments<MyPlayer> OnAPlayerDownedAnotherPlayer(OnPlayerKillArguments<MyPlayer> args)
     {
         var victim = args.Victim;
         var killer = args.Killer;

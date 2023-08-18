@@ -9,7 +9,7 @@ public class Swap : GameMode
         Name = "Swappers";
     }
 
-    public override Task<OnPlayerSpawnArguments> OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
+    public override Returner OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
     {
         player.Modifications.RunningSpeedMultiplier = 1.25f;
         player.Modifications.FallDamageMultiplier = 0f;
@@ -17,13 +17,12 @@ public class Swap : GameMode
         return base.OnPlayerSpawning(player, request);
     }
 
-    public override async Task OnAPlayerDownedAnotherPlayer(OnPlayerKillArguments<MyPlayer> onPlayerKillArguments)
+    public override OnPlayerKillArguments<MyPlayer> OnAPlayerDownedAnotherPlayer(OnPlayerKillArguments<MyPlayer> onPlayerKillArguments)
     {
-        await Task.Run(() =>
-        {
+        
             var victimPos = onPlayerKillArguments.VictimPosition;
             onPlayerKillArguments.Killer.Teleport(victimPos); // Non functional for now
             onPlayerKillArguments.Victim.Kill();
-        });
+            return base.OnAPlayerDownedAnotherPlayer(onPlayerKillArguments);
     }
 }

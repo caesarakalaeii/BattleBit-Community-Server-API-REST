@@ -34,13 +34,13 @@ public class GunGame : GameMode
     }
 
     // Gun Game
-    public override async Task<OnPlayerSpawnArguments> OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
+    public override Returner OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
     {
-        await Task.Run(() => { UpdateWeapon(player); });
-        return request;
+        UpdateWeapon(player);
+        return base.OnPlayerSpawning(player, request);
     }
 
-    public override Task OnPlayerSpawned(MyPlayer player)
+    public override MyPlayer OnPlayerSpawned(MyPlayer player)
     {
         player.Modifications.RespawnTime = 0f;
         player.Modifications.RunningSpeedMultiplier = 1.25f;
@@ -67,32 +67,31 @@ public class GunGame : GameMode
         player.SetPrimaryWeapon(w, 10, true);
     }
 
-    public override async Task OnAPlayerDownedAnotherPlayer(OnPlayerKillArguments<MyPlayer> onPlayerKillArguments)
+    public override OnPlayerKillArguments<MyPlayer> OnAPlayerDownedAnotherPlayer(
+        OnPlayerKillArguments<MyPlayer> onPlayerKillArguments)
     {
-        await Task.Run(() =>
+        var killer = onPlayerKillArguments.Killer;
+        var victim = onPlayerKillArguments.Victim;
+        killer.Level++;
+        if (killer.Level == GetGameLenght()) R.AnnounceShort($"{killer.Name} only needs 1 more Kill");
+        if (killer.Level > GetGameLenght())
         {
-            var killer = onPlayerKillArguments.Killer;
-            var victim = onPlayerKillArguments.Victim;
-            killer.Level++;
-            if (killer.Level == GetGameLenght()) AnnounceShort($"{killer.Name} only needs 1 more Kill");
-            if (killer.Level > GetGameLenght())
-            {
-                AnnounceShort($"{killer.Name} won the Game");
-                ForceEndGame();
-            }
+            R.AnnounceShort($"{killer.Name} won the Game");
+            R.ForceEndGame();
+        }
 
-            killer.SetHP(100);
-            victim.Kill();
-            if (onPlayerKillArguments.KillerTool == "Sledge Hammer" && victim.Level != 0) victim.Level--;
-            UpdateWeapon(killer);
-        });
+        killer.SetHP(100);
+        victim.Kill();
+        if (onPlayerKillArguments.KillerTool == "Sledge Hammer" && victim.Level != 0) victim.Level--;
+        UpdateWeapon(killer);
+        return base.OnAPlayerDownedAnotherPlayer(onPlayerKillArguments);
     }
 
 
     public override void Reset()
     {
-        SayToChat("Resetting GameMode");
-        foreach (var player in AllPlayers)
+        R.SayToChat("Resetting GameMode");
+        foreach (var player in R.AllPlayers)
         {
             player.Level = 0;
             player.Kill();

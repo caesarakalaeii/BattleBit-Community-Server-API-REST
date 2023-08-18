@@ -107,7 +107,7 @@ public class TeamGunGame : GameMode
         LevelB = 0;
     }
 
-    public override Task<OnPlayerSpawnArguments> OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
+    public override Returner OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
     {
         var level = 0;
         if (player.Team == Team.TeamA) level = LevelA;
@@ -122,7 +122,7 @@ public class TeamGunGame : GameMode
         return base.OnPlayerSpawning(player, request);
     }
 
-    public override Task OnPlayerSpawned(MyPlayer player)
+    public override MyPlayer OnPlayerSpawned(MyPlayer player)
     {
         player.Modifications.RespawnTime = 0f;
         player.Modifications.RunningSpeedMultiplier = 1.25f;
@@ -132,7 +132,7 @@ public class TeamGunGame : GameMode
         return base.OnPlayerSpawned(player);
     }
 
-    public override Task OnAPlayerDownedAnotherPlayer(OnPlayerKillArguments<MyPlayer> args)
+    public override OnPlayerKillArguments<MyPlayer> OnAPlayerDownedAnotherPlayer(OnPlayerKillArguments<MyPlayer> args)
     {
         args.Victim.Kill();
         int level;
@@ -149,12 +149,12 @@ public class TeamGunGame : GameMode
 
         if (level == ProgressionList.Count)
         {
-            AnnounceShort($"{args.Killer.Team.ToString()} only needs 1 more Kill");
+            R.AnnounceShort($"{args.Killer.Team.ToString()} only needs 1 more Kill");
         }
         else if (level > ProgressionList.Count)
         {
-            AnnounceLong($"{args.Killer.Team.ToString()} won the Game");
-            ForceEndGame();
+            R.AnnounceLong($"{args.Killer.Team.ToString()} won the Game");
+            R.ForceEndGame();
             Reset();
         }
 
