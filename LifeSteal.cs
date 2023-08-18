@@ -4,7 +4,7 @@ namespace CommunityServerAPI;
 
 public class LifeSteal : GameMode
 {
-    public LifeSteal()
+    public LifeSteal(MyGameServer r) : base(r)
     {
         Name = "LifeSteal";
     }

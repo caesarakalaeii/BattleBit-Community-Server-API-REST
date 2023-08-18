@@ -4,7 +4,7 @@ namespace CommunityServerAPI;
 
 public class MeleeOnly : GameMode
 {
-    public MeleeOnly()
+    public MeleeOnly(MyGameServer r) : base(r)
     {
         Name = "MeleeOnly";
     }

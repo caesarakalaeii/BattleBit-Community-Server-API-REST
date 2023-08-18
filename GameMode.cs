@@ -1,14 +1,13 @@
-﻿
-
-using BattleBitAPI.Server;
+﻿using BattleBitAPI.Server;
 
 public class GameMode : GameServer<MyPlayer>
 {
     public string Name = string.Empty;
+    protected MyGameServer R;
 
-    protected GameMode()
+    protected GameMode(MyGameServer r)
     {
-        
+        R = r;
     }
 
     public virtual void Init()

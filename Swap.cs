@@ -4,7 +4,7 @@ namespace CommunityServerAPI;
 
 public class Swap : GameMode
 {
-    public Swap()
+    public Swap(MyGameServer r) : base(r)
     {
         Name = "Swappers";
     }
@@ -26,6 +26,4 @@ public class Swap : GameMode
             onPlayerKillArguments.Victim.Kill();
         });
     }
-
-
 }

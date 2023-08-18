@@ -28,7 +28,7 @@ public class GunGame : GameMode
         Weapons.SSG69
     };
 
-    public GunGame()
+    public GunGame(MyGameServer r) : base(r)
     {
         Name = "GunGame";
     }
