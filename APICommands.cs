@@ -3,7 +3,6 @@ using BattleBitAPI.Common;
 using BattleBitAPI.Server;
 using CommunityServerAPI;
 
-
 public abstract class ApiCommand
 {
     public string CommandPrefix;
@@ -101,7 +100,7 @@ public class TeleportCommand : ApiCommand
         {
             X = Convert.ToSingle(vectorStr[0]),
             Y = Convert.ToSingle(vectorStr[1]),
-            Z = Convert.ToSingle(vectorStr[2]) 
+            Z = Convert.ToSingle(vectorStr[2])
         };
 
         var c = new Command
@@ -441,7 +440,7 @@ public class TogglePlaylistCommand : ApiCommand
     public TogglePlaylistCommand()
     {
         CommandPrefix = "!togglePlaylist";
-        Help = ": toggles aotu switching GameModes on round end";
+        Help = ": toggles switching GameModes on round end";
     }
 
     public override Command ChatCommand(MyPlayer player, ChatChannel channel, string msg)
@@ -471,6 +470,68 @@ public class GetGameModeCommand : ApiCommand
         {
             StreamerId = player.SteamID,
             Action = ActionType.GetGameMode,
+            ExecutorName = player.Name
+        };
+        return c;
+    }
+}
+
+public class AddDebugLineCommand : ApiCommand
+{
+    public AddDebugLineCommand()
+    {
+        CommandPrefix = "!addDebud";
+        Help = ": Adds Debug info to the menu";
+    }
+
+    public override Command ChatCommand(MyPlayer player, ChatChannel channel, string msg)
+    {
+        var split = msg.Split();
+        var c = new Command
+        {
+            StreamerId = player.SteamID,
+            Action = ActionType.AddLine,
+            ExecutorName = split[1]
+        };
+        return c;
+    }
+}
+
+public class DelDebugLineCommand : ApiCommand
+{
+    public DelDebugLineCommand()
+    {
+        CommandPrefix = "!addDebud";
+        Help = ": Adds Debug info to the menu";
+    }
+
+    public override Command ChatCommand(MyPlayer player, ChatChannel channel, string msg)
+    {
+        var split = msg.Split();
+        var c = new Command
+        {
+            StreamerId = player.SteamID,
+            Action = ActionType.DelLine,
+            ExecutorName = split[1]
+        };
+        return c;
+    }
+}
+
+public class ToggleDebugCommand : ApiCommand
+{
+    public ToggleDebugCommand()
+    {
+        CommandPrefix = "!getGM";
+        Help = ": returns the current gamemode";
+    }
+
+    public override Command ChatCommand(MyPlayer player, ChatChannel channel, string msg)
+    {
+        var c = new Command
+        {
+            StreamerId = player.SteamID,
+            Action = ActionType.Debug,
             ExecutorName = player.Name
         };
         return c;

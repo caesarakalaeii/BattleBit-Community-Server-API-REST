@@ -31,7 +31,19 @@ internal class MyProgram
 
 public class MyPlayer : Player<MyPlayer>
 {
+    public bool Debug;
+    public DebugInfo Info;
     public int Level;
+
+    public MyPlayer()
+    {
+        Info = new DebugInfo(this);
+    }
+
+    public void DebugMessage()
+    {
+        Message(Info.GetInfo());
+    }
 }
 
 public class MyGameServer : GameServer<MyPlayer>
@@ -60,7 +72,10 @@ public class MyGameServer : GameServer<MyPlayer>
         new NextGameModeCommand(),
         new SetGameModeCommand(),
         new GetGameModeCommand(),
-        new TogglePlaylistCommand()
+        new TogglePlaylistCommand(),
+        new AddDebugLineCommand(),
+        new DelDebugLineCommand(),
+        new ToggleDebugCommand()
     };
 
     private readonly List<GameMode> mGameModes;
@@ -117,6 +132,14 @@ public class MyGameServer : GameServer<MyPlayer>
     {
         player = mCurrentGameMode.OnPlayerGivenUp(player);
         return base.OnPlayerGivenUp(player);
+    }
+
+    public override Task OnTick()
+    {
+        foreach (var player in AllPlayers)
+            if (player.Debug)
+                player.DebugMessage();
+        return base.OnTick();
     }
 
 
@@ -433,6 +456,27 @@ public class MyGameServer : GameServer<MyPlayer>
                     AnnounceShort($"GameModePlaylist is now {mCyclePlaylist}");
                     break;
                 }
+                case ActionType.AddLine:
+                {
+                    if (!player.Info.AddLine(c.ExecutorName))
+                        player.Message($"Debug Line with Name {c.ExecutorName} was not found");
+
+                    break;
+                }
+                case ActionType.DelLine:
+                {
+                    if (!player.Info.DelLine(c.ExecutorName))
+                        player.Message($"Debug Line with Name {c.ExecutorName} was not found");
+
+                    break;
+                }
+                case ActionType.Debug:
+                {
+                    player.Debug = !player.Debug;
+                    break;
+                }
+
+
                 // Add more cases for other ActionType values as needed
             }
         }

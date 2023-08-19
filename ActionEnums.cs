@@ -22,5 +22,8 @@ public enum ActionType
     NextGameMode,
     SetGameMode,
     GetGameMode,
-    TogglePlaylist
+    TogglePlaylist,
+    AddLine,
+    DelLine,
+    Debug
 }
