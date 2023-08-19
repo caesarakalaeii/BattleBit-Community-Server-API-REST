@@ -31,20 +31,17 @@ public class DebugInfo
 
     public string GetInfo()
     {
-        var re = string.Empty;
-        foreach (var line in mInfoLines) re += $"{line.Line(mPlayer)}{RichText.LineBreak}";
-        return re;
+        return mInfoLines.Aggregate(string.Empty, (current, line) => current + $"{line.Line(mPlayer)}{RichText.LineBreak}");
     }
 
     public bool AddLine(string name)
     {
         var found = false;
-        foreach (var line in mAvailableInfoLines)
-            if (line.Name == name)
-            {
-                found = true;
-                mInfoLines.Add(line);
-            }
+        foreach (var line in mAvailableInfoLines.Where(line => line.Name == name))
+        {
+            found = true;
+            mInfoLines.Add(line);
+        }
 
         return found;
     }
@@ -52,14 +49,23 @@ public class DebugInfo
     public bool DelLine(string name)
     {
         var found = false;
-        foreach (var line in mInfoLines)
-            if (line.Name == name)
-            {
-                found = true;
-                mInfoLines.Remove(line);
-            }
+        foreach (var line in mInfoLines.Where(line => line.Name == name))
+        {
+            found = true;
+            mInfoLines.Remove(line);
+        }
 
         return found;
+    }
+
+    public List<string> GetAvailableLines()
+    {
+        return mAvailableInfoLines.Select(line => line.Name).ToList();
+    }
+
+    public List<string> GetCurrentLines()
+    {
+        return mInfoLines.Select(line => line.Name).ToList();
     }
 }
 

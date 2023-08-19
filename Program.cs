@@ -459,14 +459,16 @@ public class MyGameServer : GameServer<MyPlayer>
                 case ActionType.AddLine:
                 {
                     if (!player.Info.AddLine(c.ExecutorName))
-                        player.Message($"Debug Line with Name {c.ExecutorName} was not found");
+                        player.Message(
+                            $"Debug Line with Name {c.ExecutorName} was not found{RichText.LineBreak}Available Lines are: {player.Info.GetAvailableLines()}");
 
                     break;
                 }
                 case ActionType.DelLine:
                 {
                     if (!player.Info.DelLine(c.ExecutorName))
-                        player.Message($"Debug Line with Name {c.ExecutorName} was not found");
+                        player.Message(
+                            $"Debug Line with Name {c.ExecutorName} was not found{RichText.LineBreak}Current Lines are: {player.Info.GetCurrentLines()}");
 
                     break;
                 }
@@ -481,6 +483,7 @@ public class MyGameServer : GameServer<MyPlayer>
             }
         }
     }
+
 
 /*
  set admin role
