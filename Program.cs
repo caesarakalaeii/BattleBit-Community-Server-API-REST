@@ -362,7 +362,8 @@ public class MyGameServer : GameServer<MyPlayer>
                 }
                 case ActionType.Help:
                 {
-                    foreach (var command in mChatCommands) SayToChat($"{command.CommandPrefix} {command.Help}");
+                    foreach (var command in mChatCommands)
+                        player.Message($"{command.CommandPrefix}{command.Help}{RichText.LineBreak}");
                     break;
                 }
                 case ActionType.ChangeDamage:
