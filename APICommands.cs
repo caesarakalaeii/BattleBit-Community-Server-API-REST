@@ -480,7 +480,7 @@ public class AddDebugLineCommand : ApiCommand
 {
     public AddDebugLineCommand()
     {
-        CommandPrefix = "!addDebud";
+        CommandPrefix = "!addDebug";
         Help = ": Adds Debug info to the menu";
     }
 
@@ -501,8 +501,8 @@ public class DelDebugLineCommand : ApiCommand
 {
     public DelDebugLineCommand()
     {
-        CommandPrefix = "!addDebud";
-        Help = ": Adds Debug info to the menu";
+        CommandPrefix = "!delDebug";
+        Help = ": Removes Debug info to the menu";
     }
 
     public override Command ChatCommand(MyPlayer player, ChatChannel channel, string msg)
