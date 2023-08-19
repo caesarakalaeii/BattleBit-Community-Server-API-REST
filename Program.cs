@@ -460,16 +460,27 @@ public class MyGameServer : GameServer<MyPlayer>
                 case ActionType.AddLine:
                 {
                     if (!player.Info.AddLine(c.ExecutorName))
+                    {
+                        var lines = string.Empty;
+                        foreach (var line in player.Info.GetCurrentLines()) lines += $"{line},";
+
                         player.Message(
-                            $"Debug Line with Name {c.ExecutorName} was not found{RichText.LineBreak}Available Lines are: {player.Info.GetAvailableLines()}");
+                            $"Debug Line with Name {c.ExecutorName} was not found{RichText.LineBreak}Available Lines are: {lines}");
+                    }
 
                     break;
                 }
                 case ActionType.DelLine:
                 {
                     if (!player.Info.DelLine(c.ExecutorName))
+                    {
+                        var lines = string.Empty;
+                        foreach (var line in player.Info.GetCurrentLines()) lines += $"{line},";
+
+
                         player.Message(
-                            $"Debug Line with Name {c.ExecutorName} was not found{RichText.LineBreak}Current Lines are: {player.Info.GetCurrentLines()}");
+                            $"Debug Line with Name {c.ExecutorName} was not found{RichText.LineBreak}Current Lines are: {lines}");
+                    }
 
                     break;
                 }
