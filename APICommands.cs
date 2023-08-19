@@ -522,8 +522,8 @@ public class ToggleDebugCommand : ApiCommand
 {
     public ToggleDebugCommand()
     {
-        CommandPrefix = "!getGM";
-        Help = ": returns the current gamemode";
+        CommandPrefix = "!toggleDebug";
+        Help = ": en/disables the debug messages";
     }
 
     public override Command ChatCommand(MyPlayer player, ChatChannel channel, string msg)

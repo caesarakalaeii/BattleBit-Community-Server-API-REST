@@ -31,8 +31,8 @@ internal class MyProgram
 
 public class MyPlayer : Player<MyPlayer>
 {
+    public readonly DebugInfo Info;
     public bool Debug;
-    public DebugInfo Info;
     public int Level;
 
     public MyPlayer()
