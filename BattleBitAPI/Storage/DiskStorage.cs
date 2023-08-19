@@ -1,4 +1,6 @@
-﻿namespace BattleBitAPI.Storage;
+﻿using BattleBitAPI.Common;
+
+namespace BattleBitAPI.Storage;
 
 public class DiskStorage : IPlayerStatsDatabase
 {

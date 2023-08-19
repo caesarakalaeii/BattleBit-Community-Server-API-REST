@@ -1,4 +1,6 @@
-﻿namespace BattleBitAPI.Server;
+﻿using BattleBitAPI.Common;
+
+namespace BattleBitAPI.Server;
 
 public class Utility
 {

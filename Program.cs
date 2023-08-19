@@ -40,7 +40,7 @@ public class MyGameServer : GameServer<MyPlayer>
     private const string SteamIdJson = "./config/streamer_steamids.json";
     private readonly List<ulong> mAdmins = new();
 
-    private readonly List<APICommand> mChatCommands = new()
+    private readonly List<ApiCommand> mChatCommands = new()
     {
         new HealCommand(),
         new KillCommand(),

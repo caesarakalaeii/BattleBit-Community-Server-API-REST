@@ -1,4 +1,5 @@
-﻿using Stream = BattleBitAPI.Common.Serialization.Stream;
+﻿using BattleBitAPI.Common;
+using Stream = BattleBitAPI.Common.Serialization.Stream;
 
 namespace BattleBitAPI.Server;
 
