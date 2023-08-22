@@ -441,6 +441,7 @@ public class MyGameServer : GameServer<MyPlayer>
                     catch (Exception ex)
                     {
                         Console.WriteLine($"ERROR initializing GM: {ex}");
+                        
                     }
 
                     AnnounceShort($"GameMode is now {mCurrentGameMode.Name}");
@@ -461,11 +462,15 @@ public class MyGameServer : GameServer<MyPlayer>
                 {
                     if (!player.Info.AddLine(c.ExecutorName))
                     {
+                        var prev = player.Debug;
                         var lines = string.Empty;
                         foreach (var line in player.Info.GetCurrentLines()) lines += $"{line},";
 
                         player.Message(
-                            $"Debug Line with Name {c.ExecutorName} was not found{RichText.LineBreak}Available Lines are: {lines}");
+                            $"Debug Line with Name {c.ExecutorName} was not found{RichText.LineBreak}Available Lines are: {lines}",
+                            10f);
+                        await Task.Delay(10);
+                        player.Debug = prev;
                     }
 
                     break;
@@ -474,12 +479,16 @@ public class MyGameServer : GameServer<MyPlayer>
                 {
                     if (!player.Info.DelLine(c.ExecutorName))
                     {
-                        var lines = string.Empty;
-                        foreach (var line in player.Info.GetCurrentLines()) lines += $"{line},";
-
-
+                        var lines = player.Info.GetCurrentLines()
+                            .Aggregate(string.Empty, (current, line) => current + $"{line},");
+                        var prev = player.Debug;
+                        if (player.Debug) player.Debug = false;
                         player.Message(
-                            $"Debug Line with Name {c.ExecutorName} was not found{RichText.LineBreak}Current Lines are: {lines}");
+                            $"Debug Line with Name {c.ExecutorName} was not found{RichText.LineBreak}Current Lines are: {lines}",
+                            10f);
+
+                        await Task.Delay(10);
+                        player.Debug = prev;
                     }
 
                     break;
