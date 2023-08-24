@@ -21,6 +21,8 @@ public class Command
     public List<Weapon> WeaponChange { get; set; }
 
     public List<Gadget> GadgetChange { get; set; }
+
+    public int Delay { get; set; }
 }
 
 public class CommandQueue
