@@ -33,12 +33,12 @@ namespace BattleBitAPI
                     ChangeTeam(value);
             }
         }
-        public Squads Squad
+        public Squads SquadName
         {
-            get => mInternal.Squad;
+            get => mInternal.SquadName;
             set
             {
-                if (value == mInternal.Squad)
+                if (value == mInternal.SquadName)
                     return;
                 if (value == Squads.NoSquad)
                     KickFromSquad();
@@ -46,8 +46,28 @@ namespace BattleBitAPI
                     JoinSquad(value);
             }
         }
-        public bool InSquad => mInternal.Squad != Squads.NoSquad;
+        public Squad<TPlayer> Squad
+        {
+            get => GameServer.GetSquad(mInternal.Team, mInternal.SquadName);
+            set
+            {
+                if (value == Squad)
+                    return;
+
+                if (value == null)
+                    KickFromSquad();
+                else
+                {
+                    if (value.Team != this.Team)
+                        ChangeTeam(value.Team);
+                    JoinSquad(value.Name);
+                }
+            }
+        }
+        public bool InSquad => mInternal.SquadName != Squads.NoSquad;
         public int PingMs => mInternal.PingMs;
+        public long CurrentSessionID => mInternal.SessionID;
+        public bool IsConnected => mInternal.SessionID != 0;
 
         public float HP
         {
@@ -127,11 +147,11 @@ namespace BattleBitAPI
         {
 
         }
-        public virtual async Task OnJoinedSquad(Squads newSquad)
+        public virtual async Task OnJoinedSquad(Squad<TPlayer> newSquad)
         {
 
         }
-        public virtual async Task OnLeftSquad(Squads oldSquad)
+        public virtual async Task OnLeftSquad(Squad<TPlayer> oldSquad)
         {
 
         }
@@ -139,55 +159,77 @@ namespace BattleBitAPI
         {
 
         }
+        public virtual async Task OnSessionChanged(long oldSessionID, long newSessionID)
+        {
+
+        }
 
         // ---- Functions ----
         public void Kick(string reason = "")
         {
-            GameServer.Kick(this, reason);
+            if (IsConnected)
+                GameServer.Kick(this, reason);
         }
         public void Kill()
         {
-            GameServer.Kill(this);
+            if (IsConnected)
+                GameServer.Kill(this);
         }
         public void ChangeTeam()
         {
-            GameServer.ChangeTeam(this);
+            if (IsConnected)
+                GameServer.ChangeTeam(this);
         }
         public void ChangeTeam(Team team)
         {
-            GameServer.ChangeTeam(this, team);
+            if (IsConnected)
+                GameServer.ChangeTeam(this, team);
         }
         public void KickFromSquad()
         {
-            GameServer.KickFromSquad(this);
+            if (IsConnected)
+                GameServer.KickFromSquad(this);
         }
         public void JoinSquad(Squads targetSquad)
         {
-            GameServer.JoinSquad(this, targetSquad);
+            if (IsConnected)
+                GameServer.JoinSquad(this, targetSquad);
         }
         public void DisbandTheSquad()
         {
-            GameServer.DisbandPlayerCurrentSquad(this);
+            if (IsConnected)
+                GameServer.DisbandPlayerCurrentSquad(this);
         }
         public void PromoteToSquadLeader()
         {
-            GameServer.PromoteSquadLeader(this);
+            if (IsConnected)
+                GameServer.PromoteSquadLeader(this);
         }
         public void WarnPlayer(string msg)
         {
-            GameServer.WarnPlayer(this, msg);
+            if (IsConnected)
+                GameServer.WarnPlayer(this, msg);
         }
         public void Message(string msg)
         {
-            GameServer.MessageToPlayer(this, msg);
+            if (IsConnected)
+                GameServer.MessageToPlayer(this, msg);
         }
+        public void SayToChat(string msg)
+        {
+            if (IsConnected)
+                GameServer.SayToChat(msg, this);
+        }
+
         public void Message(string msg, float fadeoutTime)
         {
-            GameServer.MessageToPlayer(this, msg, fadeoutTime);
+            if (IsConnected)
+                GameServer.MessageToPlayer(this, msg, fadeoutTime);
         }
         public void SetNewRole(GameRole role)
         {
-            GameServer.SetRoleTo(this, role);
+            if (IsConnected)
+                GameServer.SetRoleTo(this, role);
         }
         public void Teleport(Vector3 target)
         {
@@ -195,47 +237,57 @@ namespace BattleBitAPI
         }
         public void SpawnPlayer(PlayerLoadout loadout, PlayerWearings wearings, Vector3 position, Vector3 lookDirection, PlayerStand stand, float spawnProtection)
         {
-            GameServer.SpawnPlayer(this, loadout, wearings, position, lookDirection, stand, spawnProtection);
+            if (IsConnected)
+                GameServer.SpawnPlayer(this, loadout, wearings, position, lookDirection, stand, spawnProtection);
         }
         public void SetHP(float newHP)
         {
-            GameServer.SetHP(this, newHP);
+            if (IsConnected)
+                GameServer.SetHP(this, newHP);
         }
         public void GiveDamage(float damage)
         {
-            GameServer.GiveDamage(this, damage);
+            if (IsConnected)
+                GameServer.GiveDamage(this, damage);
         }
         public void Heal(float hp)
         {
-            GameServer.Heal(this, hp);
+            if (IsConnected)
+                GameServer.Heal(this, hp);
         }
         public void SetPrimaryWeapon(WeaponItem item, int extraMagazines, bool clear = false)
         {
-            GameServer.SetPrimaryWeapon(this, item, extraMagazines, clear);
+            if (IsConnected)
+                GameServer.SetPrimaryWeapon(this, item, extraMagazines, clear);
         }
         public void SetSecondaryWeapon(WeaponItem item, int extraMagazines, bool clear = false)
         {
-            GameServer.SetSecondaryWeapon(this, item, extraMagazines, clear);
+            if (IsConnected)
+                GameServer.SetSecondaryWeapon(this, item, extraMagazines, clear);
         }
         public void SetFirstAidGadget(string item, int extra, bool clear = false)
         {
-            GameServer.SetFirstAid(this, item, extra, clear);
+            if (IsConnected)
+                GameServer.SetFirstAid(this, item, extra, clear);
         }
         public void SetLightGadget(string item, int extra, bool clear = false)
         {
-            GameServer.SetLightGadget(this, item, extra, clear);
+            if (IsConnected)
+                GameServer.SetLightGadget(this, item, extra, clear);
         }
         public void SetHeavyGadget(string item, int extra, bool clear = false)
         {
-            GameServer.SetHeavyGadget(this, item, extra, clear);
+            if (IsConnected)
+                GameServer.SetHeavyGadget(this, item, extra, clear);
         }
         public void SetThrowable(string item, int extra, bool clear = false)
         {
-            GameServer.SetThrowable(this, item, extra, clear);
+            if (IsConnected)
+                GameServer.SetThrowable(this, item, extra, clear);
         }
 
         // ---- Static ----
-        public static void SetInstance(TPlayer player, Player<TPlayer>.Internal @internal)
+        internal static void SetInstance(TPlayer player, Player<TPlayer>.Internal @internal)
         {
             player.mInternal = @internal;
         }
@@ -255,8 +307,10 @@ namespace BattleBitAPI
             public GameServer<TPlayer> GameServer;
             public GameRole Role;
             public Team Team;
-            public Squads Squad;
+            public Squads SquadName;
             public int PingMs = 999;
+            public long PreviousSessionID = 0;
+            public long SessionID = 0;
 
             public bool IsAlive;
             public float HP;

@@ -1,7 +1,9 @@
-﻿namespace CommunityServerAPI.BattleBitAPI
+﻿namespace BattleBitAPI
 {
     public static class Const
     {
+        public static string Version = "1.0.2v";
+
         // ---- Networking ---- 
         /// <summary>
         /// Maximum data size for a single package. 4MB is default.
