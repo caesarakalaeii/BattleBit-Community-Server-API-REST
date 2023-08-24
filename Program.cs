@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Text.Json;
 using BattleBitAPI;
 using BattleBitAPI.Common;
 using BattleBitAPI.Server;
@@ -17,12 +18,12 @@ internal class MyProgram
         Thread.Sleep(-1);
     }
 
-    private static MyPlayer OnCreatingPlayerInstance()
+    private static MyPlayer OnCreatingPlayerInstance(ulong steamId)
     {
         return new MyPlayer();
     }
 
-    private static MyGameServer OnCreatingGameServerInstance()
+    private static MyGameServer OnCreatingGameServerInstance(IPAddress ip, ushort port)
     {
         return new MyGameServer();
     }
@@ -112,12 +113,6 @@ public class MyGameServer : GameServer<MyPlayer>
         await Console.Out.WriteLineAsync(GameIP + " Connected");
     }
 
-    public override Task OnReconnected()
-    {
-        Console.Out.WriteLine($"Current GameMode: {mCurrentGameMode.Name}");
-        return base.OnReconnected();
-    }
-
 
     //modular GameModes: CHECK if new Gamemodes need more passthrough
 
@@ -149,7 +144,7 @@ public class MyGameServer : GameServer<MyPlayer>
         return base.OnPlayerSpawned(player);
     }
 
-    public override Task<OnPlayerSpawnArguments> OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
+    public override Task<OnPlayerSpawnArguments?> OnPlayerSpawning(MyPlayer player, OnPlayerSpawnArguments request)
     {
         var re = mCurrentGameMode.OnPlayerSpawning(player, request);
         return base.OnPlayerSpawning(re.Player, re.SpawnArguments);
@@ -179,7 +174,7 @@ public class MyGameServer : GameServer<MyPlayer>
 
     public override async Task OnPlayerConnected(MyPlayer player)
     {
-        SayToChat("<color=green>" + player.Name + " joined the game!</color>");
+        SayToAllChat("<color=green>" + player.Name + " joined the game!</color>");
         player.Message($"Current GameMode is: {mCurrentGameMode.Name}", 4f);
         await Console.Out.WriteLineAsync("Connected: " + player);
 
@@ -189,7 +184,7 @@ public class MyGameServer : GameServer<MyPlayer>
     public override Task OnPlayerDisconnected(MyPlayer player)
     {
         Console.WriteLine($"{player.Name} disconnected");
-        SayToChat($"<color=red>{player.Name} left the game!</color>");
+        SayToAllChat($"<color=red>{player.Name} left the game!</color>");
         player = mCurrentGameMode.OnPlayerDisconnected(player);
         return base.OnPlayerDisconnected(player);
     }
@@ -441,7 +436,6 @@ public class MyGameServer : GameServer<MyPlayer>
                     catch (Exception ex)
                     {
                         Console.WriteLine($"ERROR initializing GM: {ex}");
-                        
                     }
 
                     AnnounceShort($"GameMode is now {mCurrentGameMode.Name}");
